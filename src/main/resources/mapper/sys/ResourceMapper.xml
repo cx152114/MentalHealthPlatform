@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlt.sys.mapper.ResourceMapper">
+    <select id="selectAllMenuList" resultType="com.dlt.sys.entity.Menu">
+        SELECT
+          distinct t1.resource_id  as resourceId,
+          t1.parent_id as parentId,
+          t1.resource_name as resourceName,
+          t1.url as url,
+          t1.icon as icon
+        FROM
+            sys_resource t1
+        ORDER BY order_num ASC
+    </select>
+</mapper>
