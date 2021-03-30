@@ -15,6 +15,7 @@ import com.dlt.sys.mapper.UserMapper;
 import com.dlt.sys.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +99,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             treeNodeData.add(treeUtil.generateTree(nodeId));
         }
         return treeNodeData;
+    }
+
+    @Override
+    public void updateByIdForPassword(String password) {
+        User user=(User) SecurityUtils.getSubject().getPrincipal();
+        user.setPassword(password);
+        userMapper.updateById(user);
     }
 
     @Override

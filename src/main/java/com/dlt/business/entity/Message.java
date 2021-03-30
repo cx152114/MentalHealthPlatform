@@ -1,8 +1,10 @@
 package com.dlt.business.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.dlt.sys.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -35,6 +37,14 @@ public class Message implements Serializable {
     private Date createTime;
 
     private Integer messageStatus;
+
+    private Integer receiveId;
+
+    @TableField(exist = false)
+    private User user;
+
+    @TableField(exist = false)
+    private User receiveUser;
 
 
 }

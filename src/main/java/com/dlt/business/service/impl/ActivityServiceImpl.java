@@ -1,5 +1,6 @@
 package com.dlt.business.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.dlt.business.entity.Activity;
 import com.dlt.business.mapper.ActivityMapper;
 import com.dlt.business.service.IActivityService;
@@ -16,6 +17,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> implements IActivityService {
-
 
 }

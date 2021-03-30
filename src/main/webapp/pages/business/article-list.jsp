@@ -331,7 +331,7 @@
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:activity:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:activity:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showArticle(this)\">查看</button></shiro:hasPermission>";
+                    return "<shiro:hasPermission name="business:article:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:article:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showArticle(this)\">查看</button></shiro:hasPermission>";
 
                 }
             }]
@@ -552,9 +552,10 @@
                             if (data.code == 0) {
                                 //layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
                                 $("#articleId").val(data.article.articleId);
-                                $("#typeId").val(data.article.typeId);
+                                $("#selectArticleType1").val(data.article.typeId);
                                 $("#articleTitle").val(data.article.articleTitle);
                                 $("#author").val(data.article.author);
+
                                 $("#articleContent").val(data.article.articleContent);
                                 var articleContent=data.article.articleContent;
                                 $("#test1").summernote('code',articleContent);

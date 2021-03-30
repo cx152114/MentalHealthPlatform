@@ -9,12 +9,16 @@ import com.dlt.sys.entity.UserRole;
 import com.dlt.sys.service.IUserRoleService;
 import com.dlt.sys.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**
@@ -79,6 +83,7 @@ public class UserController {
     @RequestMapping(value = "/editUser",method = RequestMethod.POST)
     @RequiresPermissions("sys:user:update")
     public String editUser(User user){
+        System.out.println(user);
         //String salt=IdUtil.simpleUUID().toUpperCase();
         QueryWrapper<String> pram=new QueryWrapper<>();
         User oldUser=userService.getById(user.getUserId());
@@ -148,4 +153,41 @@ public class UserController {
         List<User> userList=userService.list(queryWrapper);
         return R.ok().put("userList",userList);
     }
+
+    @RequestMapping(value = "/getCurrentUsers" )
+    @ResponseBody
+    public R getCurrentUsers(){
+        User user=(User) SecurityUtils.getSubject().getPrincipal();
+        return R.ok().put("user",user);
+    }
+
+    @RequestMapping(value = "/editTargetUser",method = RequestMethod.POST)
+    @RequiresPermissions("sys:user:update")
+    public String editTargetUser(User user){
+        QueryWrapper<String> pram=new QueryWrapper<>();
+        //User oldUser=userService.getById(user.getUserId());
+        //String salt=oldUser.getSalt();
+        //String password= MD5Util.md5_private_salt(oldUser.getPassword(),salt);
+        //user.setSalt(salt);
+        //user.setPassword(password);
+        userService.updateById(user);
+        // 销毁会话
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "/sys/login";
+    }
+
+    @RequestMapping(value = "/resetPassword",method = RequestMethod.POST)
+    @RequiresPermissions("sys:user:update")
+    @ResponseBody
+    public R resetPassword(String password){
+        QueryWrapper<String> pram=new QueryWrapper<>();
+        //User oldUser=userService.getById(user.getUserId());
+        User user=(User) SecurityUtils.getSubject().getPrincipal();
+        String salt=user.getSalt();
+        password= MD5Util.md5_private_salt(password,salt);
+        userService.updateByIdForPassword(password);
+        return R.ok();
+    }
+
 }

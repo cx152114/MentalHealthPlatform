@@ -3,12 +3,15 @@ package com.dlt.business.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dlt.business.entity.Activity;
+import com.dlt.business.entity.ActivityApply;
 import com.dlt.business.entity.Joy;
 import com.dlt.business.entity.Secret;
 import com.dlt.business.service.IJoyService;
 import com.dlt.business.service.ISecretService;
 import com.dlt.common.model.R;
 import com.dlt.sys.entity.User;
+import com.dlt.sys.service.IUserService;
 import net.sf.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -40,6 +43,9 @@ public class SecretController {
     @Autowired
     private ISecretService secretService;
 
+    @Autowired
+    private IUserService userService;
+
     @GetMapping
     @RequiresPermissions("business:secret:search")
     public String secretManagement(){
@@ -49,10 +55,13 @@ public class SecretController {
     @RequestMapping(value = "/findAllSecret")
     @RequiresPermissions("business:secret:search")
     @ResponseBody
-    public R findAllSecret(Page<Secret> page, Secret secret, String startTime, String endTime){
+    public R findAllSecret(Secret secret, String startTime, String endTime){
         QueryWrapper<Secret> queryWrapper=new QueryWrapper<Secret>();
         if (null != secret.getUId()) {
-            queryWrapper.like("u_id", secret.getUId());
+            queryWrapper.eq("u_id", secret.getUId());
+        }
+        if (!StringUtils.isEmpty(secret.getSecretMessage())) {
+            queryWrapper.like("secret_message", secret.getSecretMessage());
         }
         if (!StringUtils.isEmpty(startTime)){
             queryWrapper.ge("create_date",startTime);
@@ -61,8 +70,8 @@ public class SecretController {
             queryWrapper.le("create_date",startTime);
         }
         queryWrapper.orderByDesc("create_date");
-        secretService.page(page, queryWrapper);
-        return R.ok(page);
+        List<Secret> list = secretService.list(queryWrapper);
+        return R.ok().put("rows",list);
     }
 
 
@@ -81,14 +90,11 @@ public class SecretController {
     @RequiresPermissions("business:secret:edit")
     @ResponseBody
     public R editSecret(Secret secret){
-        //activity.setCreatetime(new Date());
-        //User user=(User) SecurityUtils.getSubject().getPrincipal();
-        //notice.setOpername(user.getUsername());
         secretService.updateById(secret);
         return R.ok();
     }
 
-    @RequestMapping(value = "deleteTargetSecret")
+    @RequestMapping(value = "/deleteTargetSecret")
     @RequiresPermissions("business:secret:remove")
     @ResponseBody
     public R deleteTargetSecret(Integer secretId){
@@ -97,7 +103,7 @@ public class SecretController {
     }
 
 
-    @RequestMapping(value = "batchDeleteSecret")
+    @RequestMapping(value = "/batchDeleteSecret")
     @RequiresPermissions("business:secret:batchRemove")
     @ResponseBody
     public R batchDeleteSecret(String ids){
@@ -110,5 +116,48 @@ public class SecretController {
         secretService.removeByIds(list);
         return R.ok("删除成功");
     }
+
+    @RequestMapping(value = "/findTargetSecret",method = RequestMethod.POST)
+    @ResponseBody
+    public R findTargetSecret(Integer secretId){
+        Secret secret=secretService.getById(secretId);
+        User user = userService.getById(secret.getUId());
+        secret.setUser(user);
+        return R.ok().put("secret",secret);
+    }
+
+    /**
+     * 功能描述: <br>
+     * 〈心情分享〉
+     * @Param:
+     * @Return:
+     * @Author: dlt
+     * @Date: 2021-03-28 0:21
+     */
+    @GetMapping(value = "/moodSharing")
+    @RequiresPermissions("business:secret:search")
+    public String moodSharing(){
+        return "/business/student-moodSharing";
+    }
+
+    @GetMapping(value = "/secretPublicWall")
+    @RequiresPermissions("business:secret:search")
+    public String secretPublicWall(){
+        return "/business/student-secretWall";
+    }
+
+    @RequestMapping(value = "/pointLikeTargetSecret",method = RequestMethod.POST)
+    @RequiresPermissions("business:secret:search")
+    @ResponseBody
+    public R pointLikeTargetSecret(Integer secretId){
+        Secret secret = secretService.getById(secretId);
+        secret.setHitCount(secret.getHitCount()+1);
+        secretService.updateById(secret);
+        return R.ok();
+    }
+
+
+
+
 
 }

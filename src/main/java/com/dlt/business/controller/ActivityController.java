@@ -4,6 +4,8 @@ package com.dlt.business.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dlt.business.entity.Activity;
+import com.dlt.business.entity.ActivityApply;
+import com.dlt.business.service.IActivityApplyService;
 import com.dlt.business.service.IActivityService;
 import com.dlt.common.model.R;
 import com.dlt.sys.entity.Notice;
@@ -39,6 +41,9 @@ public class ActivityController {
 
     @Autowired
     private IActivityService activityService;
+
+    @Autowired
+    private IActivityApplyService activityApplyService;
 
     @GetMapping
     @RequiresPermissions("business:activity:search")
@@ -122,6 +127,75 @@ public class ActivityController {
         Activity activity=activityService.getById(activityId);
 
         return R.ok().put("activity",activity);
+    }
+
+    @GetMapping(value = "/studentAppliedActivity")
+    @RequiresPermissions("business:activity:search")
+    public String studentAppliedActivity(){
+        return "/business/student-applyedActivity";
+    }
+
+
+
+
+    @RequestMapping(value = "/applyJoinTargetActivity",method = RequestMethod.POST)
+    @ResponseBody
+    public R applyJoinTargetActivity(Integer activityId){
+        ActivityApply activityApply = new ActivityApply();
+        activityApply.setActivityId(activityId);
+        User user=(User) SecurityUtils.getSubject().getPrincipal();
+        activityApply.setUId(user.getUserId());
+        QueryWrapper <ActivityApply> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("u_id",user.getUserId());
+        queryWrapper.eq("activity_id",activityId);
+        List<ActivityApply> activityApplies = new ArrayList<>();
+        activityApplies = activityApplyService.list(queryWrapper);
+        if (activityApplies.size()>0){
+            return R.error("您已报名该活动，请勿重复报名");
+        }else{
+            activityApplyService.save(activityApply);
+        }
+        return R.ok();
+    }
+
+
+
+    @RequestMapping(value = "/findAppliedActivity")
+    @RequiresPermissions("business:activity:search")
+    @ResponseBody
+    public R findAppliedActivity(Activity activity){
+        QueryWrapper<ActivityApply> queryWrapper=new QueryWrapper<ActivityApply>();
+        User user=(User) SecurityUtils.getSubject().getPrincipal();
+        queryWrapper.eq("u_id",user.getUserId());
+        List<ActivityApply> activityApplyList = activityApplyService.list(queryWrapper);
+        List<Activity> activities = new ArrayList<>();
+        if (activityApplyList.size()>0){
+            for (ActivityApply activityApply:activityApplyList) {
+                if (activityApply.getApplyStatus() != 5){
+                    Activity activity1 = activityService.getById(activityApply.getActivityId());
+                    activities.add(activity1);
+                }
+            }
+        }
+        return R.ok().put("rows",activities);
+    }
+
+    @RequestMapping(value = "/quitApplyActivity",method = RequestMethod.POST)
+    @RequiresPermissions("business:activity:edit")
+    @ResponseBody
+    public R quitApplyActivity(Integer activityId){
+        QueryWrapper<ActivityApply> queryWrapper=new QueryWrapper<ActivityApply>();
+        User user=(User) SecurityUtils.getSubject().getPrincipal();
+        queryWrapper.eq("u_id",user.getUserId());
+        queryWrapper.eq("activity_id",activityId);
+        List<ActivityApply> activityApplyList = activityApplyService.list(queryWrapper);
+        for (ActivityApply activityApply : activityApplyList){
+            if (activityApply.getApplyStatus() == 1 || activityApply.getApplyStatus() == 0){
+                activityApply.setApplyStatus(5);
+                activityApplyService.updateById(activityApply);
+            }
+        }
+        return R.ok();
     }
 
 

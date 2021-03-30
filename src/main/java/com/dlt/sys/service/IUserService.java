@@ -38,4 +38,5 @@ public interface IUserService extends IService<User> {
      */
     List<TreeNode> getMenuTreeByUserId(Integer id);
 
+    void updateByIdForPassword(String password);
 }

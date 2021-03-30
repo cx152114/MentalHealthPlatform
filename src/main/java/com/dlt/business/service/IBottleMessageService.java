@@ -1,7 +1,12 @@
 package com.dlt.business.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dlt.business.entity.BottleMessage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dlt.business.entity.Comment;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +18,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBottleMessageService extends IService<BottleMessage> {
 
+    public List<BottleMessage> selectTargetBottleMessages(Wrapper<BottleMessage> queryWrapper);
 }

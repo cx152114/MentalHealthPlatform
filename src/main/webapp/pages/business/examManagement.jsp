@@ -60,13 +60,13 @@
 <div class="row">
     <div class="btn-group-sm" id="toolbar" role="group">
         <shiro:hasPermission name="business:exam:add">
-            <a href="javascript:void(0)" class="btn btn-success"    onclick="addNotice()"><i class="fa fa-plus"></i> 新增</a>
+            <a href="javascript:void(0)" class="btn btn-success"    onclick="addExam()"><i class="fa fa-plus"></i> 新增</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:exam:edit">
             <a href="javascript:void(0)" class="btn btn-primary" onclick="editNotice()"><i class="fa fa-edit"></i> 修改</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:exam:batchRemove">
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeLogInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeExam()"><i class="fa fa-trash-o"></i> 批量删除</a>
         </shiro:hasPermission>
     </div>
     <!-- /col-md-12 -->
@@ -78,16 +78,18 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            公告标题：<input type="text" id="title1" name="title"/>
+                            题目：<input type="text" id="title" name="title"/>
                         </li>
                         <li>
-                            发布人：<input type="text" id="opername1" name="opername"/>
-                        </li>
-                        <li class="select-time">
-                            <label>登录时间： </label>
-                            <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
-                            <span>-</span>
-                            <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+                            <!--测试试题类型的选择-->
+                            <label for="selectType" class="control-label">题目类别：</label>
+                            <select class="form-control"  style="width: 180px;" id="selectType" name="type">
+                                <option style='display: none'></option>
+                                <option value="综合测试">综合测试</option>
+                                <option value="日常交往">日常交往</option>
+                                <option value="人格检测">人格检测</option>
+                                <option value="情感测试">情感测试</option>
+                            </select>
                         </li>
                         <li>
                             <a class="btn btn-primary btn-rounded btn-sm" id="btn-search"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -119,23 +121,52 @@
     <!-- /col-md-12 -->
 </div>
 
-<%--添加公告开始--%>
+<%--添加试题开始--%>
 <div style="display: none;padding: 5px" id="addOrUpdateDiv">
     <div class="panel-body">
-            <form class="form-horizontal style-form" id="addNoticeForm" action="" method="post">
+            <form class="form-horizontal style-form" id="addExamForm" action="" method="post">
                     <div class="col-sm-12" >
                         <div>
-                            <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                            <input type="text" class="form-control" name="title" placeholder="公告标题" style="width: 60%">
+                            <label class="control-label" style="font-size:19px;margin-left: 5px;">标题</label>
+                            <input type="text" class="form-control" name="title" placeholder="标题" style="width: 60%">
+                        </div>
+                        <div>
+                            <!--测试试题类型的选择-->
+                            <label for="selectExamType" class="control-label">试题类别：</label>
+                            <select class="form-control"  style="width: 120px;" id="selectExamType"  name="type">
+                                <option style='display: none'></option>
+                                <option value="综合测试">综合测试</option>
+                                <option value="日常交往">日常交往</option>
+                                <option value="人格检测">人格检测</option>
+                                <option value="情感测试">情感测试</option>
+                            </select>
                         </div>
                         <br>
-                        <div class="box float-e-margins">
-                            <div class="box-title">
-                                <h4>编辑/保存公告内容</h4>
+                        <div>
+                            <div>
+                                <label class="control-label" style="font-size:19px;margin-left: 5px;">选项一(4分)：</label>
+                                <input type="text" class="form-control" name="section1" placeholder="选项一(4分)：" style="width: 60%">
                             </div>
-                            <div class="box-body" id="eg">
-                                <textarea name="content" id="content" class="form-control summernote" style="display: none;"></textarea>
-                                <div id="test" class="note-editor note-frame panel panel-default"></div></div>
+                        </div>
+                        <div>
+
+                            <div>
+                                <label class="control-label" style="font-size:19px;margin-left: 5px;">选项二(3分)：</label>
+                                <input type="text" class="form-control" name="section2" placeholder="选项二(3分)：" style="width: 60%">
+                            </div>
+                        </div>
+                        <div>
+
+                            <div>
+                                <label class="control-label" style="font-size:19px;margin-left: 5px;">选项三(2分)：</label>
+                                <input type="text" class="form-control" name="section3" placeholder="选项三(2分)：" style="width: 60%">
+                            </div>
+                        </div>
+                        <div>
+
+                            <div>
+                                <label class="control-label" style="font-size:19px;margin-left: 5px;">选项四(1分)：</label>
+                                <input type="text" class="form-control" name="section4" placeholder="选项四(1分)：" style="width: 60%">
                             </div>
                         </div>
                     <button type="button" id="doSubmit" class="btn btn-primary">提交</button>
@@ -146,38 +177,59 @@
     </div>
     <small class="font-bold"></small>
 </div>
-<%--添加公告结束--%>
+<%--添加测验试题结束--%>
 
-<%--修改公告开始--%>
+<%--修改测验试题开始--%>
 <div style="display: none;padding: 5px" id="editDiv">
     <div class="panel-body">
-        <form class="form-horizontal style-form" id="editNoticeForm" action="" method="post">
+        <form class="form-horizontal style-form" id="editExamForm" action="" method="post">
             <div class="col-sm-12" >
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告编号</label>
-                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%" >
+                <div style="display: none">
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">测验试题编号</label>
+                    <input type="text" class="form-control" id="businessId" name="businessId" placeholder="测验试题标题" style="width: 60%" >
                 </div>
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布人</label>
-                    <input type="text" class="form-control" id="opername" name="opername" placeholder="发布人" style="width: 60%" >
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">标题</label>
+                    <input type="text" class="form-control" id="title1" name="title" placeholder="标题" style="width: 60%">
                 </div>
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布时间</label>
-                    <input type="text" class="form-control" id="createtime" name="createtime1" placeholder="发布时间" style="width: 60%" >
+                    <!--测试试题类型的选择-->
+                    <label for="selectExamType" class="control-label">试题类别：</label>
+                    <select class="form-control"  style="width: 120px;" id="selectExamType1"  name="type">
+                        <option style='display: none'></option>
+                        <option value="综合测试">综合测试</option>
+                        <option value="日常交往">日常交往</option>
+                        <option value="人格检测">人格检测</option>
+                        <option value="情感测试">情感测试</option>
+                    </select>
                 </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="公告标题" style="width: 60%">
-                </div>
-
                 <br>
-                <div class="box float-e-margins">
-                    <div class="box-title">
-                        <h4>编辑/保存公告内容</h4>
+                <div>
+                    <div>
+                        <label class="control-label" style="font-size:19px;margin-left: 5px;">选项一(4分)：</label>
+                        <input type="text" class="form-control" id="section1" name="section1" placeholder="选项一(4分)：" style="width: 60%">
                     </div>
-                    <div class="box-body" id="eg1">
-                        <textarea name="content" id="content1" class="form-control summernote" style="display: none;"></textarea>
-                        <div id="test1" class="note-editor note-frame panel panel-default"></div></div>
+                </div>
+                <div>
+
+                    <div>
+                        <label class="control-label" style="font-size:19px;margin-left: 5px;">选项二(3分)：</label>
+                        <input type="text" class="form-control" id="section2" name="section2" placeholder="选项二(3分)：" style="width: 60%">
+                    </div>
+                </div>
+                <div>
+
+                    <div>
+                        <label class="control-label" style="font-size:19px;margin-left: 5px;">选项三(2分)：</label>
+                        <input type="text" class="form-control" id="section3" name="section3" placeholder="选项三(2分)：" style="width: 60%">
+                    </div>
+                </div>
+                <div>
+
+                    <div>
+                        <label class="control-label" style="font-size:19px;margin-left: 5px;">选项四(1分)：</label>
+                        <input type="text" class="form-control" id="section4" name="section4" placeholder="选项四(1分)：" style="width: 60%">
+                    </div>
                 </div>
             </div>
             <button type="button" id="doSubmit1" class="btn btn-primary">提交</button>
@@ -188,11 +240,11 @@
 </div>
 <small class="font-bold"></small>
 </div>
-<%--修改公告结束--%>
+<%--修改测验试题结束--%>
 
 
 
-<%--查看公告开始--%>
+<%--查看测验试题开始--%>
 <div style="display: none;padding: 5px" id="showNoticeDiv">
     <h3 id="show_title" align="center"></h3>
     <div style="text-align: right;">
@@ -203,7 +255,7 @@
     <div id="show_content" ></div>
 
 </div>
-<%--查看公告结束--%>
+<%--查看测验试题结束--%>
 
 
 <!-- js placed at the end of the document so the pages load faster -->
@@ -248,8 +300,8 @@
             return {
                 current: param.pageNumber, // 当前页 1
                 size: param.pageSize,      // 一页显示多少天 10
-                title:$("#title1").val(),
-                type: $("#type").val(),
+                title:$("#title").val(),
+                type: $("#selectType").val(),
                 // startTime:$("#startTime").val(),
                 // endTime:$("#endTime").val()
             }
@@ -282,8 +334,7 @@
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:exam:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:notice:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showNotice(this)\">查看</button></shiro:hasPermission>";
-
+                    return "<shiro:hasPermission name="business:exam:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>";
                 }
             }]
     });
@@ -296,7 +347,7 @@
     // 刷新表格
     function refreshTable() {
         dataTable.bootstrapTable('refresh', {
-            url: "/business/joy/findAllJoy",
+            url: "/business/exam/findAllExam",
             pageSize: 5,
             pageNumber: 1
         });
@@ -306,10 +357,10 @@
     var mainIndex;
 
     //iframe窗
-    function addNotice() {
+    function addExam() {
         mainIndex=layer.open({
             type: 1,
-            title: '新增公告',
+            title: '新增测验试题',
             shadeClose: true,
             shade: false,
             maxmin: true, //开启最大化最小化按钮
@@ -319,42 +370,38 @@
     }
 
     function editNotice(data) {
-        var $table = $('#notices');
-        var notice = $table.bootstrapTable('getSelections');
-        if (JSON.stringify(notice) == "[]") {
+        var $table = $('#exams');
+        var exam = $table.bootstrapTable('getSelections');
+        if (JSON.stringify(exam) == "[]") {
             layer.alert("请先选择要进行修改的记录", {icon: 5, offset: '0px'});
         } else {
-            var noticeId = notice[0].noticeId;
-            //alert(noticeId);
-
+            var businessId = exam[0].businessId;
             mainIndex = layer.open({
                 type: 1,
-                title: '修改公告',
+                title: '修改测验试题',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: ['893px', '500px'],
                 content: $("#editDiv"),
                 success: function () {
-                    //$("#editNoticeForm")[0].reset();
                     //装载新的数据
-                    $("editNoticeForm").val("dataFrm", data);
+                    $("editExamForm").val("dataFrm", data);
                     $.ajax({
-                        url: '/sys/notice/findTargetNotice',
+                        url: '/business/exam/findTargetExam',
                         dataType: 'json',
                         type: 'post',
-                        data: {noticeId: noticeId},
+                        data: {businessId: businessId},
                         success: function (data) {
                             if (data.code == 0) {
                                 //layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
-                                $("#noticeId").val(data.notice.noticeId);
-                                $("#opername").val(data.notice.opername);
-                                $("#createtime").val(data.notice.createtime);
-                                $("#title").val(data.notice.title);
-                                $("#content1").val(data.notice.content);
-
-                                var content="<p>"+data.notice.content+"</p>";
-                                $('#test1').summernote('code',content);
+                                $("#businessId").val(data.exam.businessId);
+                                $("#selectExamType1").val(data.exam.type);
+                                $("#title1").val(data.exam.title);
+                                $("#section1").val(data.exam.section1);
+                                $("#section2").val(data.exam.section2);
+                                $("#section3").val(data.exam.section3);
+                                $("#section4").val(data.exam.section4);
                             } else {
                                 layer.alert(data.msg, {icon: 5, offset: '0px'});
                             }
@@ -372,23 +419,23 @@
     /**
      * 批量删除
      */
-    function removeSomeLogInfo() {
-        var notices= $('#notices').bootstrapTable('getSelections');
+    function removeSomeExam() {
+        var exams= $('#exams').bootstrapTable('getSelections');
         // alert(notices[0].id);
         var ids = new Array();
-        for (var i = 0; i <notices.length ; i++) {
-            ids[i]=notices[i].noticeId;
+        for (var i = 0; i <exams.length ; i++) {
+            ids[i]=exams[i].businessId;
         }
         if (ids.length==0){
-            layer.msg("请选择要删除的公告",{icon:5});
+            layer.msg("请选择要删除的测验试题",{icon:5});
             return;
         }else {
-            layer.confirm('你是否确定要删除选定的公告？', {
+            layer.confirm('你是否确定要删除选定的测验试题？', {
                 btn: ['确定','取消'] //按钮
             }, function(){
                 ids=JSON.stringify(ids);
                 $.ajax({
-                    url:'/sys/notice/batchDeleteNotices',
+                    url:'/business/exam/batchDeleteExam',
                     dataType:'json',
                     type:'post',
                     data:{ids:ids},
@@ -407,16 +454,16 @@
     }
 
     function remove(data){
-        layer.confirm('你是否确定要删除该条公告？', {
+        layer.confirm('你是否确定要删除该条测验试题？', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var value = $(data).parent().parent().find("td");
-            var noticeId=value.eq(1).text().toString().trim();
+            var businessId=value.eq(1).text().toString().trim();
             $.ajax({
-                url:'/sys/notice/deleteTargetNotice',
+                url:'/business/exam/deleteTargetExam',
                 dataType:'json',
                 type:'post',
-                data:{noticeId:noticeId},
+                data:{businessId:businessId},
                 success:function(data){
                     if (data.code == 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
@@ -469,14 +516,8 @@
     });
 
     $("#doSubmit").click(function(){
-        //同步富文本和textarea里面的内容
-        var text = $($("#test").summernote("code")).text();
-        //var text = $($("#test").summernote("code"));
-
-        $("#content").val(text);
-        //return;
-        var data=$("#addNoticeForm").serialize();
-        $.post("/sys/notice/addNotice",data,function(res){
+        var data=$("#addExamForm").serialize();
+        $.post("/business/exam/addExam",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -486,12 +527,8 @@
     });
 
     $("#doSubmit1").click(function(){
-        //同步富文本和textarea里面的内容
-        var text01 = $($("#test1").summernote("code")).text();
-        //var text = $($("#test").summernote("code"));
-        $("#content1").val(text01);
-        var data=$("#editNoticeForm").serialize();
-        $.post("/sys/notice/editNotice",data,function(res){
+        var data=$("#editExamForm").serialize();
+        $.post("/business/exam/editExam",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -507,7 +544,7 @@
             type:1,
             content:$("#showNoticeDiv"),
             area:['800px','300px'],
-            title:'查看公告',
+            title:'查看测验试题',
             success:function(){
                 var value = $(data).parent().parent().find("td");
                 var noticeId=value.eq(1).text().toString().trim();
@@ -539,50 +576,6 @@
         });
     }
 </script>
-
-<%--日期选择--%>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/laydate/laydate.js"></script>
-<script type="text/javascript">
-
-    var startDate = laydate.render({
-        elem: '#startTime',
-        max: $('#endTime').val(),
-        theme: 'molv',
-        trigger: 'click',
-        done: function(value, date) {
-            // 结束时间大于开始时间
-            if (value !== '') {
-                endDate.config.min.year = date.year;
-                endDate.config.min.month = date.month - 1;
-                endDate.config.min.date = date.date;
-            } else {
-                endDate.config.min.year = '';
-                endDate.config.min.month = '';
-                endDate.config.min.date = '';
-            }
-        }
-    });
-
-    var endDate = laydate.render({
-        elem: '#endTime',
-        min: $('#startTime').val(),
-        theme: 'molv',
-        trigger: 'click',
-        done: function(value, date) {
-            // 开始时间小于结束时间
-            if (value !== '') {
-                startDate.config.max.year = date.year;
-                startDate.config.max.month = date.month - 1;
-                startDate.config.max.date = date.date;
-            } else {
-                startDate.config.max.year = '';
-                startDate.config.max.month = '';
-                startDate.config.max.date = '';
-            }
-        }
-    });
-</script>
-
 </body>
 </html>
 

@@ -314,6 +314,9 @@
                 field: 'maxCount',
                 title: '最大参加人数'
             }, {
+                field: 'remainingCount',
+                title: '剩余名额'
+            }, {
                 field: 'address',
                 title: '地址'
             }, {
@@ -326,7 +329,7 @@
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:activity:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:notice:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showActivity(this)\">查看</button></shiro:hasPermission>";
+                    return "<shiro:hasPermission name="business:activity:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:activity:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showActivity(this)\">查看</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:activity:search"><button type=\"button\" class=\"btn btn-primary btn-rounded btn-xs\" onclick=\"applyActivity(this)\">报名</button></shiro:hasPermission>";
 
                 }
             }]
@@ -492,6 +495,30 @@
 
     }
 
+    function applyActivity(data){
+        layer.confirm('你是否确定要参加本次活动？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var value = $(data).parent().parent().find("td");
+            var activityId=value.eq(1).text().toString().trim();
+            $.ajax({
+                url:'/business/activity/applyJoinTargetActivity',
+                dataType:'json',
+                type:'post',
+                data:{activityId:activityId},
+                success:function(data){
+                    if (data.code == 0) {
+                        layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
+                        refreshTable();
+                    } else {
+                        layer.alert(data.msg, {icon: 5, offset: '0px'});
+                    }
+                }
+            });
+        }, function(){
+
+        });
+    }
 
     $(document).ready(function () {
         $("#test").summernote({

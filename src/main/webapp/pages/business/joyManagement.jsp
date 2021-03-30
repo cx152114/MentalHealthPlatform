@@ -60,13 +60,13 @@
 <div class="row">
     <div class="btn-group-sm" id="toolbar" role="group">
         <shiro:hasPermission name="business:joy:add">
-            <a href="javascript:void(0)" class="btn btn-success"    onclick="addNotice()"><i class="fa fa-plus"></i> 新增</a>
+            <a href="javascript:void(0)" class="btn btn-success"    onclick="addJoy()"><i class="fa fa-plus"></i> 新增</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:joy:edit">
-            <a href="javascript:void(0)" class="btn btn-primary" onclick="editNotice()"><i class="fa fa-edit"></i> 修改</a>
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="editJoy()"><i class="fa fa-edit"></i> 修改</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:joy:batchRemove">
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeLogInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeJoyInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
         </shiro:hasPermission>
     </div>
     <!-- /col-md-12 -->
@@ -77,9 +77,19 @@
             <form id="time-form">
                 <div class="select-list">
                     <ul>
-
                         <li>
-                            标题：<input type="text" id="title1" name="title"/>
+                            <!--笑话类别的选择-->
+                            <label for="selectJoyTypeId" class="control-label">笑话类别：</label>
+                            <select class="form-control"  style="width: 120px;" id="selectJoyTypeId" name="joyType">
+                                <option style='display: none'></option>
+                                <option value="幽默笑话">幽默笑话</option>
+                                <option value="阿p趣事">阿p趣事</option>
+                                <option value="脑筋急转弯">脑筋急转弯</option>
+                                <option value="搞笑段子">搞笑段子</option>
+                            </select>
+                        </li>
+                        <li>
+                            标题：<input type="text" id="joyTitle" name="joyTitle"/>
                         </li>
                         <li class="select-time">
                             <label>发布时间： </label>
@@ -122,24 +132,39 @@
     <!-- /col-md-12 -->
 </div>
 
-<%--添加公告开始--%>
+<%--添加笑话开始--%>
 <div style="display: none;padding: 5px" id="addOrUpdateDiv">
     <div class="panel-body">
-            <form class="form-horizontal style-form" id="addNoticeForm" action="" method="post">
+            <form class="form-horizontal style-form" id="addJoyForm" action="" method="post">
                     <div class="col-sm-12" >
                         <div>
-                            <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                            <input type="text" class="form-control" name="title" placeholder="公告标题" style="width: 60%">
+                            <!--笑话类别的选择-->
+                            <label for="joyTypeId" class="control-label" style="font-size:19px;margin-left: 5px;">笑话类别：</label>
+                            <select class="form-control"  style="width: 120px;" id="joyTypeId" name="joyType">
+                                <option style='display: none'></option>
+                                <option value="幽默笑话">幽默笑话</option>
+                                <option value="阿p趣事">阿p趣事</option>
+                                <option value="脑筋急转弯">脑筋急转弯</option>
+                                <option value="搞笑段子">搞笑段子</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="control-label" style="font-size:19px;margin-left: 5px;">笑话标题</label>
+                            <input type="text" class="form-control" name="joyTitle" placeholder="笑话标题" style="width: 60%">
                         </div>
                         <br>
                         <div class="box float-e-margins">
                             <div class="box-title">
-                                <h4>编辑/保存公告内容</h4>
+                                <h4>编辑/保存笑话内容</h4>
                             </div>
                             <div class="box-body" id="eg">
-                                <textarea name="content" id="content" class="form-control summernote" style="display: none;"></textarea>
+                                <textarea name="joyContent" id="joyContent" class="form-control summernote" style="display: none;"></textarea>
                                 <div id="test" class="note-editor note-frame panel panel-default"></div></div>
                             </div>
+                        </div>
+                        <div>
+                            <label class="control-label" style="font-size:19px;margin-left: 5px;">答案</label>
+                            <input type="text" class="form-control" name="answer" placeholder="答案" style="width: 60%">
                         </div>
                     <button type="button" id="doSubmit" class="btn btn-primary">提交</button>
                     <button type="reset" class="btn btn-warning">重置</button>
@@ -149,38 +174,44 @@
     </div>
     <small class="font-bold"></small>
 </div>
-<%--添加公告结束--%>
+<%--添加笑话结束--%>
 
 <%--修改公告开始--%>
 <div style="display: none;padding: 5px" id="editDiv">
     <div class="panel-body">
-        <form class="form-horizontal style-form" id="editNoticeForm" action="" method="post">
+        <form class="form-horizontal style-form" id="editJoyForm" action="" method="post">
             <div class="col-sm-12" >
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告编号</label>
-                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%" >
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">笑话编号</label>
+                    <input type="text" class="form-control" id="joyId" name="joyId" placeholder="笑话编号" style="width: 60%" >
                 </div>
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布人</label>
-                    <input type="text" class="form-control" id="opername" name="opername" placeholder="发布人" style="width: 60%" >
+                    <!--笑话类别的选择-->
+                    <label for="joyTypeId" class="control-label" style="font-size:19px;margin-left: 5px;">笑话类别：</label>
+                    <select class="form-control"  style="width: 120px;" id="joyTypeId1" name="joyType">
+                        <option style='display: none'></option>
+                        <option value="幽默笑话">幽默笑话</option>
+                        <option value="阿p趣事">阿p趣事</option>
+                        <option value="脑筋急转弯">脑筋急转弯</option>
+                        <option value="搞笑段子">搞笑段子</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布时间</label>
-                    <input type="text" class="form-control" id="createtime" name="createtime1" placeholder="发布时间" style="width: 60%" >
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">笑话标题</label>
+                    <input type="text" class="form-control" id="joyTitle1" name="joyTitle" placeholder="笑话标题" style="width: 60%">
                 </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="公告标题" style="width: 60%">
-                </div>
-
                 <br>
                 <div class="box float-e-margins">
                     <div class="box-title">
-                        <h4>编辑/保存公告内容</h4>
+                        <h4>编辑/保存笑话内容</h4>
                     </div>
                     <div class="box-body" id="eg1">
-                        <textarea name="content" id="content1" class="form-control summernote" style="display: none;"></textarea>
+                        <textarea name="joyContent" id="joyContent1" class="form-control summernote" style="display: none;"></textarea>
                         <div id="test1" class="note-editor note-frame panel panel-default"></div></div>
+                </div>
+                <div>
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">答案</label>
+                    <input type="text" class="form-control" id="answer1" name="answer" placeholder="答案" style="width: 60%">
                 </div>
             </div>
             <button type="button" id="doSubmit1" class="btn btn-primary">提交</button>
@@ -195,18 +226,20 @@
 
 
 
-<%--查看公告开始--%>
-<div style="display: none;padding: 5px" id="showNoticeDiv">
-    <h3 id="show_title" align="center"></h3>
+<%--查看笑话开始--%>
+<div style="display: none;padding: 5px" id="showJoyDiv">
+    <h3 id="ShowJoyTitle" align="center"></h3>
     <div style="text-align: right;">
-        发布人:<span id="show_opername"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-        发布时间:<span id="show_createtime"></span>
+        笑话类型:<span id="ShowJoyType"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        时间:<span id="ShowJoyDate"></span>
     </div>
     <hr>
     <div id="show_content" ></div>
-
+    <div style="text-align: right;">
+        答案:<span id="answer"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
 </div>
-<%--查看公告结束--%>
+<%--查看笑话结束--%>
 
 
 <!-- js placed at the end of the document so the pages load faster -->
@@ -268,8 +301,8 @@
             return {
                 current: param.pageNumber, // 当前页 1
                 size: param.pageSize,      // 一页显示多少天 10
-                title:$("#title1").val(),
-                sendName: $("#sendName").val(),
+                joyType:$("#selectJoyTypeId").val(),
+                joyTitle:$("#joyTitle").val(),
                 startTime:$("#startTime").val(),
                 endTime:$("#endTime").val()
             }
@@ -304,7 +337,7 @@
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:joy:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:notice:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showNotice(this)\">查看</button></shiro:hasPermission>";
+                    return "<shiro:hasPermission name="business:joy:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:joy:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"ShowJoy(this)\">查看</button></shiro:hasPermission>";
 
                 }
             }]
@@ -342,10 +375,10 @@
     var mainIndex;
 
     //iframe窗
-    function addNotice() {
+    function addJoy() {
         mainIndex=layer.open({
             type: 1,
-            title: '新增公告',
+            title: '新增笑话',
             shadeClose: true,
             shade: false,
             maxmin: true, //开启最大化最小化按钮
@@ -354,42 +387,42 @@
         });
     }
 
-    function editNotice(data) {
-        var $table = $('#notices');
-        var notice = $table.bootstrapTable('getSelections');
-        if (JSON.stringify(notice) == "[]") {
+    function editJoy(data) {
+        var $table = $('#joys');
+        var joy = $table.bootstrapTable('getSelections');
+        if (JSON.stringify(joy) == "[]") {
             layer.alert("请先选择要进行修改的记录", {icon: 5, offset: '0px'});
         } else {
-            var noticeId = notice[0].noticeId;
+            var joyId = joy[0].joyId;
             //alert(noticeId);
 
             mainIndex = layer.open({
                 type: 1,
-                title: '修改公告',
+                title: '修改笑话',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: ['893px', '500px'],
                 content: $("#editDiv"),
                 success: function () {
-                    //$("#editNoticeForm")[0].reset();
+                    //$("#editJoyForm")[0].reset();
                     //装载新的数据
-                    $("editNoticeForm").val("dataFrm", data);
+                    $("editJoyForm").val("dataFrm", data);
                     $.ajax({
-                        url: '/sys/notice/findTargetNotice',
+                        url: '/business/joy/findTargetJoy',
                         dataType: 'json',
                         type: 'post',
-                        data: {noticeId: noticeId},
+                        data: {joyId: joyId},
                         success: function (data) {
                             if (data.code == 0) {
                                 //layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
-                                $("#noticeId").val(data.notice.noticeId);
-                                $("#opername").val(data.notice.opername);
-                                $("#createtime").val(data.notice.createtime);
-                                $("#title").val(data.notice.title);
-                                $("#content1").val(data.notice.content);
+                                $("#joyId").val(data.joy.joyId);
+                                $("#joyTypeId1").val(data.joy.joyType);
+                                $("#joyTitle1").val(data.joy.joyTitle);
+                                $("#answer1").val(data.joy.answer);
+                                $("#joyContent1").val(data.joy.joyContent);
 
-                                var content="<p>"+data.notice.content+"</p>";
+                                var content="<p>"+data.joy.joyContent+"</p>";
                                 $('#test1').summernote('code',content);
                             } else {
                                 layer.alert(data.msg, {icon: 5, offset: '0px'});
@@ -397,7 +430,7 @@
                         }
                     });
 
-                    //url="/sys/notice/editNotice";
+                    //url="/sys/notice/editJoy";
                 }
             });
         }
@@ -408,23 +441,23 @@
     /**
      * 批量删除
      */
-    function removeSomeLogInfo() {
-        var notices= $('#notices').bootstrapTable('getSelections');
+    function removeSomeJoyInfo() {
+        var joys= $('#joys').bootstrapTable('getSelections');
         // alert(notices[0].id);
         var ids = new Array();
-        for (var i = 0; i <notices.length ; i++) {
-            ids[i]=notices[i].noticeId;
+        for (var i = 0; i <joys.length ; i++) {
+            ids[i]=joys[i].joyId;
         }
         if (ids.length==0){
-            layer.msg("请选择要删除的公告",{icon:5});
+            layer.msg("请选择要删除的笑话",{icon:5});
             return;
         }else {
-            layer.confirm('你是否确定要删除选定的公告？', {
+            layer.confirm('你是否确定要删除选定的笑话？', {
                 btn: ['确定','取消'] //按钮
             }, function(){
                 ids=JSON.stringify(ids);
                 $.ajax({
-                    url:'/sys/notice/batchDeleteNotices',
+                    url:'/business/joy/batchDeleteJoy',
                     dataType:'json',
                     type:'post',
                     data:{ids:ids},
@@ -443,16 +476,16 @@
     }
 
     function remove(data){
-        layer.confirm('你是否确定要删除该条公告？', {
+        layer.confirm('你是否确定要删除该条笑话？', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var value = $(data).parent().parent().find("td");
-            var noticeId=value.eq(1).text().toString().trim();
+            var joyId=value.eq(1).text().toString().trim();
             $.ajax({
-                url:'/sys/notice/deleteTargetNotice',
+                url:'/business/joy/deleteTargetJoy',
                 dataType:'json',
                 type:'post',
-                data:{noticeId:noticeId},
+                data:{joyId:joyId},
                 success:function(data){
                     if (data.code == 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
@@ -509,10 +542,10 @@
         var text = $($("#test").summernote("code")).text();
         //var text = $($("#test").summernote("code"));
 
-        $("#content").val(text);
+        $("#joyContent").val(text);
         //return;
-        var data=$("#addNoticeForm").serialize();
-        $.post("/sys/notice/addNotice",data,function(res){
+        var data=$("#addJoyForm").serialize();
+        $.post("/business/joy/addJoy",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -525,9 +558,9 @@
         //同步富文本和textarea里面的内容
         var text01 = $($("#test1").summernote("code")).text();
         //var text = $($("#test").summernote("code"));
-        $("#content1").val(text01);
-        var data=$("#editNoticeForm").serialize();
-        $.post("/sys/notice/editNotice",data,function(res){
+        $("#joyContent1").val(text01);
+        var data=$("#editJoyForm").serialize();
+        $.post("/business/joy/editJoy",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -538,28 +571,28 @@
 
 
     //弹出查看层
-    function showNotice(data){
+    function ShowJoy(data){
         mainIndex=layer.open({
             type:1,
-            content:$("#showNoticeDiv"),
+            content:$("#showJoyDiv"),
             area:['800px','300px'],
-            title:'查看公告',
+            title:'查看笑话详情',
             success:function(){
                 var value = $(data).parent().parent().find("td");
-                var noticeId=value.eq(1).text().toString().trim();
+                var joyId=value.eq(1).text().toString().trim();
                 $.ajax({
-                    url:'/sys/notice/findTargetNotice',
+                    url:'/business/joy/findTargetJoy',
                     dataType:'json',
                     type:'post',
-                    data:{noticeId:noticeId},
+                    data:{joyId:joyId},
                     success:function(data){
                         if(data.code==0){
-                            var notice=data.notice;
-                            $("#show_title").html(notice.title);
-                            $("#show_opername").html(notice.opername);
-                            $("#show_createtime").html(notice.createtime);
-
-                            var content="<lable style='font-size: 16px;'>"+notice.content+"</lable>";
+                            var joy=data.joy;
+                            $("#ShowJoyTitle").html(joy.joyTitle);
+                            $("#ShowJoyType").html(joy.joyType);
+                            $("#ShowJoyDate").html(joy.joyDate);
+                            $("#answer").html(joy.answer);
+                            var content="<lable style='font-size: 16px;'>"+joy.joyContent+"</lable>";
                             $("#show_content").html(content);
                         }else{
                             layer.alert(data.msg, {icon: 5, offset: '0px'});

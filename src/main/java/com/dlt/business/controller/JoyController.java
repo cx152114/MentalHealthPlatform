@@ -4,6 +4,7 @@ package com.dlt.business.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dlt.business.entity.Activity;
+import com.dlt.business.entity.Article;
 import com.dlt.business.entity.Joy;
 import com.dlt.business.service.IActivityService;
 import com.dlt.business.service.IJoyService;
@@ -14,12 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,7 +87,7 @@ public class JoyController {
         return R.ok();
     }
 
-    @RequestMapping(value = "deleteTargetJoy")
+    @RequestMapping(value = "/deleteTargetJoy")
     @RequiresPermissions("business:joy:remove")
     @ResponseBody
     public R deleteTargetJoy(Integer joyId){
@@ -98,7 +96,7 @@ public class JoyController {
     }
 
 
-    @RequestMapping(value = "batchDeleteJoy")
+    @RequestMapping(value = "/batchDeleteJoy")
     @RequiresPermissions("business:joy:batchRemove")
     @ResponseBody
     public R batchDeleteJoy(String ids){
@@ -112,8 +110,28 @@ public class JoyController {
         return R.ok("删除成功");
     }
 
+    @RequestMapping(value = "/findTargetJoy",method = RequestMethod.POST)
+    @ResponseBody
+    public R findTargetJoy(Integer joyId){
+        Joy joy=joyService.getById(joyId);
+        return R.ok().put("joy",joy);
+    }
 
+    @GetMapping(value = "/studentJoy")
+    @RequiresPermissions("business:joy:search")
+    public String studentJoy(){
+        return "/business/student-joy";
+    }
 
-
-
+    @RequestMapping(value = "/findTargetStudentJoy/{joyType}")
+    @RequiresPermissions("business:exam:search")
+    @ResponseBody
+    public R findTargetStudentArticle(@PathVariable String joyType){
+        QueryWrapper<Joy> queryWrapper = new QueryWrapper<>();
+        if (! StringUtils.isEmpty(joyType)){
+            queryWrapper.like("joy_type",joyType);
+        }
+        List<Joy> joyList=joyService.list(queryWrapper);
+        return R.ok().put("rows",joyList);
+    }
 }

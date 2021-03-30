@@ -10,7 +10,7 @@
 <%@ taglib uri="http://shiro.apache.org/tags" prefix="shiro" %>
 <html>
 <head>
-    <title>心情分享管理</title>
+    <title>密码公开墙管理</title>
     <!-- Favicons -->
     <link href="${pageContext.request.contextPath}/img/favicon.png" rel="icon">
 
@@ -60,13 +60,13 @@
 <div class="row">
     <div class="btn-group-sm" id="toolbar" role="group">
         <shiro:hasPermission name="business:secret:add">
-            <a href="javascript:void(0)" class="btn btn-success"    onclick="addNotice()"><i class="fa fa-plus"></i> 新增</a>
+            <a href="javascript:void(0)" class="btn btn-success"    onclick="addSecret()"><i class="fa fa-plus"></i> 新增</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:secret:edit">
-            <a href="javascript:void(0)" class="btn btn-primary" onclick="editNotice()"><i class="fa fa-edit"></i> 修改</a>
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="editSecret()"><i class="fa fa-edit"></i> 修改</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:secret:batchRemove">
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeLogInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeSecretInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
         </shiro:hasPermission>
     </div>
     <!-- /col-md-12 -->
@@ -78,13 +78,13 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            公告标题：<input type="text" id="title1" name="title"/>
+                            用户编号：<input type="text" id="uId" name="uId"/>
                         </li>
                         <li>
-                            发布人：<input type="text" id="opername1" name="opername"/>
+                            秘密内容：<input type="text" id="secretMessage" name="secretMessage"/>
                         </li>
                         <li class="select-time">
-                            <label>登录时间： </label>
+                            <label>发布时间： </label>
                             <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
                             <span>-</span>
                             <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
@@ -119,64 +119,45 @@
     <!-- /col-md-12 -->
 </div>
 
-<%--添加公告开始--%>
+<%--添加秘密开始--%>
 <div style="display: none;padding: 5px" id="addOrUpdateDiv">
     <div class="panel-body">
-            <form class="form-horizontal style-form" id="addNoticeForm" action="" method="post">
+            <form class="form-horizontal style-form" id="addSecretForm" action="" method="post">
                     <div class="col-sm-12" >
-                        <div>
-                            <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                            <input type="text" class="form-control" name="title" placeholder="公告标题" style="width: 60%">
-                        </div>
-                        <br>
                         <div class="box float-e-margins">
                             <div class="box-title">
-                                <h4>编辑/保存公告内容</h4>
+                                <h4>编辑/保存秘密内容</h4>
                             </div>
                             <div class="box-body" id="eg">
-                                <textarea name="content" id="content" class="form-control summernote" style="display: none;"></textarea>
+                                <textarea name="secretMessage" id="secretMessage1" class="form-control summernote" style="display: none;"></textarea>
                                 <div id="test" class="note-editor note-frame panel panel-default"></div></div>
                             </div>
                         </div>
                     <button type="button" id="doSubmit" class="btn btn-primary">提交</button>
                     <button type="reset" class="btn btn-warning">重置</button>
-
             </form>
         </div>
     </div>
     <small class="font-bold"></small>
 </div>
-<%--添加公告结束--%>
+<%--添加秘密结束--%>
 
-<%--修改公告开始--%>
+<%--修改秘密开始--%>
 <div style="display: none;padding: 5px" id="editDiv">
     <div class="panel-body">
-        <form class="form-horizontal style-form" id="editNoticeForm" action="" method="post">
+        <form class="form-horizontal style-form" id="editSecretForm" action="" method="post">
             <div class="col-sm-12" >
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告编号</label>
-                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%" >
+                <div style="display: none">
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">秘密编号</label>
+                    <input type="text" class="form-control" id="secretId" name="secretId" placeholder="秘密编号" style="width: 60%" >
                 </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布人</label>
-                    <input type="text" class="form-control" id="opername" name="opername" placeholder="发布人" style="width: 60%" >
-                </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布时间</label>
-                    <input type="text" class="form-control" id="createtime" name="createtime1" placeholder="发布时间" style="width: 60%" >
-                </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="公告标题" style="width: 60%">
-                </div>
-
                 <br>
                 <div class="box float-e-margins">
                     <div class="box-title">
-                        <h4>编辑/保存公告内容</h4>
+                        <h4>编辑/保存秘密内容</h4>
                     </div>
                     <div class="box-body" id="eg1">
-                        <textarea name="content" id="content1" class="form-control summernote" style="display: none;"></textarea>
+                        <textarea name="secretMessage" id="secretMessage2" class="form-control summernote" style="display: none;"></textarea>
                         <div id="test1" class="note-editor note-frame panel panel-default"></div></div>
                 </div>
             </div>
@@ -188,20 +169,23 @@
 </div>
 <small class="font-bold"></small>
 </div>
-<%--修改公告结束--%>
+<%--修改秘密结束--%>
 
 
 
-<%--查看公告开始--%>
-<div style="display: none;padding: 5px" id="showNoticeDiv">
+<%--查看秘密开始--%>
+<div style="display: none;padding: 5px" id="showSecretDiv">
     <h3 id="show_title" align="center"></h3>
     <div style="text-align: right;">
-        发布人:<span id="show_opername"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-        发布时间:<span id="show_createtime"></span>
+        发布人:<span id="username"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        发布时间:<span id="createDate"></span>
     </div>
     <hr>
     <div id="show_content" ></div>
-
+    <hr>
+    <div style="text-align: right;">
+        点赞数:<span id="hitCount"></span>
+    </div>
 </div>
 <%--查看公告结束--%>
 
@@ -241,7 +225,7 @@
         uniqueId: "secretId",                 //  每一行的唯一标识，一般为主键列
         cache: false,                       //  设置为 false 禁用 AJAX 数据缓存， 默认为true
         pagination: true,                   //  是否显示分页
-        sidePagination: "server",           //  分页方式：client客户端分页，server服务端分页
+        sidePagination: "client",           //  分页方式：client客户端分页，server服务端分页
         pageSize: 5,                       //  每页的记录行数
         queryParamsType: '',
         queryParams: function (param) {
@@ -249,6 +233,7 @@
                 current: param.pageNumber, // 当前页 1
                 size: param.pageSize,      // 一页显示多少天 10
                 uId:$("#uId").val(),
+                secretMessage:$("#secretMessage").val(),
                 startTime:$("#startTime").val(),
                 endTime:$("#endTime").val()
             }
@@ -261,10 +246,23 @@
                 title: 'ID'
             }, {
                 field: 'uId',
-                title: '用户编号'
+                title: '用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.user.userId;
+                }
+            }, {
+                field: 'username',
+                title: '发布用户',
+                formatter: function(value, item, index) {
+                    return item.user.username;
+                }
             }, {
                 field: 'secretMessage',
-                title: '秘密内容'
+                title: '秘密内容',
+                formatter: function(value, item, index) {
+                    return "<lable>"+value+"</lable>";
+                }
             }, {
                 field: 'createDate',
                 title: '发布时间'
@@ -275,7 +273,7 @@
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:secret:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:notice:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showNotice(this)\">查看</button></shiro:hasPermission>";
+                    return "<shiro:hasPermission name="business:secret:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:secret:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showSecret(this)\">查看</button></shiro:hasPermission>";
 
                 }
             }]
@@ -299,10 +297,10 @@
     var mainIndex;
 
     //iframe窗
-    function addNotice() {
+    function addSecret() {
         mainIndex=layer.open({
             type: 1,
-            title: '新增公告',
+            title: '新增秘密',
             shadeClose: true,
             shade: false,
             maxmin: true, //开启最大化最小化按钮
@@ -311,50 +309,44 @@
         });
     }
 
-    function editNotice(data) {
-        var $table = $('#notices');
-        var notice = $table.bootstrapTable('getSelections');
-        if (JSON.stringify(notice) == "[]") {
+    function editSecret(data) {
+        var $table = $('#secrets');
+        var secret = $table.bootstrapTable('getSelections');
+        if (JSON.stringify(secret) == "[]") {
             layer.alert("请先选择要进行修改的记录", {icon: 5, offset: '0px'});
         } else {
-            var noticeId = notice[0].noticeId;
+            var secretId = secret[0].secretId;
             //alert(noticeId);
 
             mainIndex = layer.open({
                 type: 1,
-                title: '修改公告',
+                title: '修改秘密',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: ['893px', '500px'],
                 content: $("#editDiv"),
                 success: function () {
-                    //$("#editNoticeForm")[0].reset();
+                    //$("#editSecretForm")[0].reset();
                     //装载新的数据
-                    $("editNoticeForm").val("dataFrm", data);
+                    $("editSecretForm").val("dataFrm", data);
                     $.ajax({
-                        url: '/sys/notice/findTargetNotice',
+                        url: '/business/secret/findTargetSecret',
                         dataType: 'json',
                         type: 'post',
-                        data: {noticeId: noticeId},
+                        data: {secretId: secretId},
                         success: function (data) {
                             if (data.code == 0) {
                                 //layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
-                                $("#noticeId").val(data.notice.noticeId);
-                                $("#opername").val(data.notice.opername);
-                                $("#createtime").val(data.notice.createtime);
-                                $("#title").val(data.notice.title);
-                                $("#content1").val(data.notice.content);
-
-                                var content="<p>"+data.notice.content+"</p>";
+                                $("#secretId").val(data.secret.secretId);
+                                $("#secretMessage2").val(data.secret.secretMessage);
+                                var content="<p>"+data.secret.secretMessage+"</p>";
                                 $('#test1').summernote('code',content);
                             } else {
                                 layer.alert(data.msg, {icon: 5, offset: '0px'});
                             }
                         }
                     });
-
-                    //url="/sys/notice/editNotice";
                 }
             });
         }
@@ -365,23 +357,23 @@
     /**
      * 批量删除
      */
-    function removeSomeLogInfo() {
-        var notices= $('#notices').bootstrapTable('getSelections');
+    function removeSomeSecretInfo() {
+        var secrets= $('#secrets').bootstrapTable('getSelections');
         // alert(notices[0].id);
         var ids = new Array();
-        for (var i = 0; i <notices.length ; i++) {
-            ids[i]=notices[i].noticeId;
+        for (var i = 0; i <secrets.length ; i++) {
+            ids[i]=secrets[i].secretId;
         }
         if (ids.length==0){
-            layer.msg("请选择要删除的公告",{icon:5});
+            layer.msg("请选择要删除的秘密",{icon:5});
             return;
         }else {
-            layer.confirm('你是否确定要删除选定的公告？', {
+            layer.confirm('你是否确定要删除选定的秘密？', {
                 btn: ['确定','取消'] //按钮
             }, function(){
                 ids=JSON.stringify(ids);
                 $.ajax({
-                    url:'/sys/notice/batchDeleteNotices',
+                    url:'/business/secret/batchDeleteSecret',
                     dataType:'json',
                     type:'post',
                     data:{ids:ids},
@@ -400,16 +392,16 @@
     }
 
     function remove(data){
-        layer.confirm('你是否确定要删除该条公告？', {
+        layer.confirm('你是否确定要删除该条秘密？', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var value = $(data).parent().parent().find("td");
-            var noticeId=value.eq(1).text().toString().trim();
+            var secretId=value.eq(1).text().toString().trim();
             $.ajax({
-                url:'/sys/notice/deleteTargetNotice',
+                url:'/business/secret/deleteTargetSecret',
                 dataType:'json',
                 type:'post',
-                data:{noticeId:noticeId},
+                data:{secretId:secretId},
                 success:function(data){
                     if (data.code == 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
@@ -463,13 +455,13 @@
 
     $("#doSubmit").click(function(){
         //同步富文本和textarea里面的内容
-        var text = $($("#test").summernote("code")).text();
+        var text = $("#test").summernote("code");
         //var text = $($("#test").summernote("code"));
 
-        $("#content").val(text);
+        $("#secretMessage1").val(text);
         //return;
-        var data=$("#addNoticeForm").serialize();
-        $.post("/sys/notice/addNotice",data,function(res){
+        var data=$("#addSecretForm").serialize();
+        $.post("/business/secret/addSecret",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -480,11 +472,11 @@
 
     $("#doSubmit1").click(function(){
         //同步富文本和textarea里面的内容
-        var text01 = $($("#test1").summernote("code")).text();
+        var text01 = $("#test1").summernote("code");
         //var text = $($("#test").summernote("code"));
-        $("#content1").val(text01);
-        var data=$("#editNoticeForm").serialize();
-        $.post("/sys/notice/editNotice",data,function(res){
+        $("#secretMessage2").val(text01);
+        var data=$("#editSecretForm").serialize();
+        $.post("/business/secret/editSecret",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -495,29 +487,29 @@
 
 
     //弹出查看层
-    function showNotice(data){
+    function showSecret(data){
         mainIndex=layer.open({
             type:1,
-            content:$("#showNoticeDiv"),
+            content:$("#showSecretDiv"),
             area:['800px','300px'],
-            title:'查看公告',
+            title:'查看秘密',
             success:function(){
                 var value = $(data).parent().parent().find("td");
-                var noticeId=value.eq(1).text().toString().trim();
+                var secretId=value.eq(1).text().toString().trim();
                 $.ajax({
-                    url:'/sys/notice/findTargetNotice',
+                    url:'/business/secret/findTargetSecret',
                     dataType:'json',
                     type:'post',
-                    data:{noticeId:noticeId},
+                    data:{secretId:secretId},
                     success:function(data){
                         if(data.code==0){
-                            var notice=data.notice;
-                            $("#show_title").html(notice.title);
-                            $("#show_opername").html(notice.opername);
-                            $("#show_createtime").html(notice.createtime);
+                            var secret=data.secret;
+                            $("#username").html(secret.user.username);
+                            $("#createDate").html(secret.createDate);
 
-                            var content="<lable style='font-size: 16px;'>"+notice.content+"</lable>";
+                            var content=secret.secretMessage;
                             $("#show_content").html(content);
+                            $("#hitCount").html(secret.hitCount);
                         }else{
                             layer.alert(data.msg, {icon: 5, offset: '0px'});
                         }

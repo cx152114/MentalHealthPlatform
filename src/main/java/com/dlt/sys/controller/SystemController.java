@@ -13,4 +13,15 @@ public class SystemController {
     public String index(){
         return "/sys/lock_screen";
     }
+
+    @GetMapping("/userInfo")
+    public String userInfo(){
+        return "/sys/userInfo";
+    }
+
+    @GetMapping("/resetPassword")
+    public String resetPassword(){
+        return "/sys/resetPassword";
+    }
+
 }

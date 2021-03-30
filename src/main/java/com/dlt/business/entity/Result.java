@@ -1,8 +1,12 @@
 package com.dlt.business.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.dlt.sys.entity.User;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +18,7 @@ import java.io.Serializable;
  * @since 2021-03-03
  */
 @TableName("business_result")
+@Data
 public class Result implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,66 +59,7 @@ public class Result implements Serializable {
      */
     private String examType;
 
-    public Integer getResultId() {
-        return resultId;
-    }
+    @TableField(exist = false)
+    private User user;
 
-    public void setResultId(Integer resultId) {
-        this.resultId = resultId;
-    }
-    public Integer getuId() {
-        return uId;
-    }
-
-    public void setuId(Integer uId) {
-        this.uId = uId;
-    }
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public String getSuggest() {
-        return suggest;
-    }
-
-    public void setSuggest(String suggest) {
-        this.suggest = suggest;
-    }
-    public String getResultLevel() {
-        return resultLevel;
-    }
-
-    public void setResultLevel(String resultLevel) {
-        this.resultLevel = resultLevel;
-    }
-    public String getExamType() {
-        return examType;
-    }
-
-    public void setExamType(String examType) {
-        this.examType = examType;
-    }
-
-    @Override
-    public String toString() {
-        return "Result{" +
-            "resultId=" + resultId +
-            ", uId=" + uId +
-            ", score=" + score +
-            ", description=" + description +
-            ", suggest=" + suggest +
-            ", resultLevel=" + resultLevel +
-            ", examType=" + examType +
-        "}";
-    }
 }

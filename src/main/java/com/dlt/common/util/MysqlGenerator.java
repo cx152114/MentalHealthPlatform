@@ -50,9 +50,11 @@ public class MysqlGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/mentalhealthplatform?useUnicode=true&serverTimezone=GMT&useSSL=false&characterEncoding=utf8");
-        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
+        dsc.setUrl("jdbc:oracle:thin:@127.0.0.1:1521:orcl");
+        //dsc.setUrl("jdbc:mysql://localhost:3306/mentalhealthplatform?useUnicode=true&serverTimezone=GMT&useSSL=false&characterEncoding=utf8");
+        //dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+        dsc.setDriverName("oracle.jdbc.driver.OracleDriver");
+        dsc.setUsername("cx");
         dsc.setPassword("123456");
         mpg.setDataSource(dsc);
 

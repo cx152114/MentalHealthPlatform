@@ -60,13 +60,13 @@
 <div class="row">
     <div class="btn-group-sm" id="toolbar" role="group">
         <shiro:hasPermission name="business:bottle:add">
-            <a href="javascript:void(0)" class="btn btn-success"    onclick="addNotice()"><i class="fa fa-plus"></i> 新增</a>
+            <a href="javascript:void(0)" class="btn btn-success"    onclick="addBottle()"><i class="fa fa-plus"></i> 新增</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:bottle:edit">
-            <a href="javascript:void(0)" class="btn btn-primary" onclick="editNotice()"><i class="fa fa-edit"></i> 修改</a>
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="editBottle()"><i class="fa fa-edit"></i> 修改</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:bottle:batchRemove">
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeLogInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeBottle()"><i class="fa fa-trash-o"></i> 批量删除</a>
         </shiro:hasPermission>
     </div>
     <!-- /col-md-12 -->
@@ -78,13 +78,13 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            公告标题：<input type="text" id="title1" name="title"/>
+                            漂流瓶内容：<input type="text" id="bottlecontent" name="bottlecontent"/>
                         </li>
                         <li>
-                            发布人：<input type="text" id="opername1" name="opername"/>
+                            用户编号：<input type="text" id="uId" name="uId"/>
                         </li>
                         <li class="select-time">
-                            <label>登录时间： </label>
+                            <label>发布时间： </label>
                             <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
                             <span>-</span>
                             <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
@@ -119,66 +119,48 @@
     <!-- /col-md-12 -->
 </div>
 
-<%--添加公告开始--%>
+<%--添加漂流瓶开始--%>
 <div style="display: none;padding: 5px" id="addOrUpdateDiv">
     <div class="panel-body">
-            <form class="form-horizontal style-form" id="addNoticeForm" action="" method="post">
+            <form class="form-horizontal style-form" id="addBottleForm" action="" method="post">
                     <div class="col-sm-12" >
-                        <div>
-                            <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                            <input type="text" class="form-control" name="title" placeholder="公告标题" style="width: 60%">
-                        </div>
-                        <br>
                         <div class="box float-e-margins">
                             <div class="box-title">
-                                <h4>编辑/保存公告内容</h4>
+                                <h4>编辑/保存漂流瓶内容</h4>
                             </div>
                             <div class="box-body" id="eg">
-                                <textarea name="content" id="content" class="form-control summernote" style="display: none;"></textarea>
+                                <textarea name="bottlecontent" id="bottlecontent1" class="form-control summernote" style="display: none;"></textarea>
                                 <div id="test" class="note-editor note-frame panel panel-default"></div></div>
                             </div>
+                        <div></div>
                         </div>
                     <button type="button" id="doSubmit" class="btn btn-primary">提交</button>
                     <button type="reset" class="btn btn-warning">重置</button>
-
             </form>
         </div>
     </div>
     <small class="font-bold"></small>
 </div>
-<%--添加公告结束--%>
+<%--添加漂流瓶结束--%>
 
-<%--修改公告开始--%>
+<%--修改漂流瓶开始--%>
 <div style="display: none;padding: 5px" id="editDiv">
     <div class="panel-body">
-        <form class="form-horizontal style-form" id="editNoticeForm" action="" method="post">
+        <form class="form-horizontal style-form" id="editBottleForm" action="" method="post">
             <div class="col-sm-12" >
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告编号</label>
-                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%" >
+                <div style="display: none">
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">漂流瓶编号</label>
+                    <input type="text" class="form-control" id="bottleId" name="bottleId" placeholder="漂流瓶编号" style="width: 60%" >
                 </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布人</label>
-                    <input type="text" class="form-control" id="opername" name="opername" placeholder="发布人" style="width: 60%" >
-                </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布时间</label>
-                    <input type="text" class="form-control" id="createtime" name="createtime1" placeholder="发布时间" style="width: 60%" >
-                </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="公告标题" style="width: 60%">
-                </div>
-
                 <br>
                 <div class="box float-e-margins">
                     <div class="box-title">
-                        <h4>编辑/保存公告内容</h4>
+                        <h4>编辑/保存漂流瓶内容</h4>
                     </div>
                     <div class="box-body" id="eg1">
-                        <textarea name="content" id="content1" class="form-control summernote" style="display: none;"></textarea>
+                        <textarea name="bottlecontent" id="bottlecontent2" class="form-control summernote" style="display: none;"></textarea>
                         <div id="test1" class="note-editor note-frame panel panel-default"></div></div>
-                </div>
+                    </div>
             </div>
             <button type="button" id="doSubmit1" class="btn btn-primary">提交</button>
             <button type="reset" class="btn btn-warning">重置</button>
@@ -188,22 +170,30 @@
 </div>
 <small class="font-bold"></small>
 </div>
-<%--修改公告结束--%>
+<%--修改漂流瓶结束--%>
 
 
 
-<%--查看公告开始--%>
-<div style="display: none;padding: 5px" id="showNoticeDiv">
-    <h3 id="show_title" align="center"></h3>
-    <div style="text-align: right;">
-        发布人:<span id="show_opername"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-        发布时间:<span id="show_createtime"></span>
-    </div>
-    <hr>
-    <div id="show_content" ></div>
-
+<%--查看漂流瓶开始--%>
+<div style="display: none;padding: 5px" id="showBottleMessageDiv">
+    <h3 id="show_title" align="center">漂流瓶板详情</h3>
+    <table class="table table-hover rowSameHeight"
+           data-toggle="table"
+           id="bottleMessages"
+           data-toolbar="#toolbar1"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-fullscreen="true"
+           data-show-columns="true"
+           data-show-columns-toggle-all="true"
+           data-click-to-select="true"
+           data-show-pagination-switch="true"
+           data-pagination="true"
+           data-page-list="[5,10,25,50,100,all]">
+        <hr/>
+    </table>
 </div>
-<%--查看公告结束--%>
+<%--查看漂流瓶结束--%>
 
 
 <!-- js placed at the end of the document so the pages load faster -->
@@ -241,7 +231,7 @@
         uniqueId: "bottleId",                 //  每一行的唯一标识，一般为主键列
         cache: false,                       //  设置为 false 禁用 AJAX 数据缓存， 默认为true
         pagination: true,                   //  是否显示分页
-        sidePagination: "server",           //  分页方式：client客户端分页，server服务端分页
+        sidePagination: "client",           //  分页方式：client客户端分页，server服务端分页
         pageSize: 5,                       //  每页的记录行数
         queryParamsType: '',
         queryParams: function (param) {
@@ -249,6 +239,7 @@
                 current: param.pageNumber, // 当前页 1
                 size: param.pageSize,      // 一页显示多少天 10
                 uId:$("#uId").val(),
+                bottlecontent:$("#bottlecontent").val(),
                 startTime:$("#startTime").val(),
                 endTime:$("#endTime").val()
             }
@@ -261,7 +252,17 @@
                 title: 'ID'
             }, {
                 field: 'uId',
-                title: '用户编号'
+                title: '用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.user.userId;
+                }
+            }, {
+                field: 'username',
+                title: '发布用户',
+                formatter: function(value, item, index) {
+                    return item.user.username;
+                }
             }, {
                 field: 'bottlecontent',
                 title: '内容'
@@ -272,8 +273,79 @@
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:bottle:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:notice:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showNotice(this)\">查看</button></shiro:hasPermission>";
+                    return "<shiro:hasPermission name="business:bottle:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:bottle:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showComment(this)\">查看</button></shiro:hasPermission>";
 
+                }
+            }]
+    });
+
+    // 初始化表格数据
+    var dataTable1 = $('#bottleMessages').bootstrapTable({
+        url: "/business/bottleMessage/findTargetBottleMessage",                      //  请求后台的URL
+        method: "get",                      //  请求方式
+        uniqueId: "bmId",                 //  每一行的唯一标识，一般为主键列
+        cache: false,                       //  设置为 false 禁用 AJAX 数据缓存， 默认为true
+        pagination: true,                   //  是否显示分页
+        sidePagination: "client",           //  分页方式：client客户端分页，server服务端分页
+        pageSize: 5,                       //  每页的记录行数
+        queryParamsType: '',
+        queryParams: function (param) {
+            return {
+                current: param.pageNumber, // 当前页 1
+                size: param.pageSize,      // 一页显示多少天 10
+                bottleId:param.bottleId
+            }
+        },
+        columns: [
+            {
+                checkbox: true
+            }, {
+                field: 'bmId',
+                title: 'ID'
+            }, {
+                field: 'bottleId',
+                title: '漂流瓶板编号'
+            }, {
+                field: 'sendUserId',
+                title: '发送用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.sendUser.userId;
+                }
+            }, {
+                field: 'sendUserName',
+                title: '发送用户',
+                formatter: function(value, item, index) {
+                    return item.sendUser.username;
+                }
+            }, {
+                field: 'content',
+                title: '内容'
+            }, {
+                field: 'createDate',
+                title: '时间'
+            }, {
+                field: 'receiveUserId',
+                title: '回复用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.receiveUser.userId;
+                }
+            }, {
+                field: 'receiveUserName',
+                title: '回复用户',
+                formatter: function(value, item, index) {
+                    return item.receiveUser.username;
+                }
+            }, {
+                field: 'commentStatus',
+                title: '状态',
+                visible:false
+            },{
+                title:'操作',
+                field: 'active',
+                formatter: function(value, item, index) {
+                    return "<shiro:hasPermission name="business:bottleMessage:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"removeBottleMessage(this)\">删除</button></shiro:hasPermission>";
                 }
             }]
     });
@@ -292,14 +364,23 @@
         });
     }
 
+    // 刷新表格
+    function refreshCommentTable(date) {
+        dataTable1.bootstrapTable('refresh', {
+            url: "/business/bottleMessage/findTargetBottleMessage/"+date,
+            pageSize: 5,
+            pageNumber: 1,
+            bottleId:date
+        });
+    }
 
     var mainIndex;
 
     //iframe窗
-    function addNotice() {
+    function addBottle() {
         mainIndex=layer.open({
             type: 1,
-            title: '新增公告',
+            title: '新增漂流瓶',
             shadeClose: true,
             shade: false,
             maxmin: true, //开启最大化最小化按钮
@@ -308,42 +389,39 @@
         });
     }
 
-    function editNotice(data) {
-        var $table = $('#notices');
-        var notice = $table.bootstrapTable('getSelections');
-        if (JSON.stringify(notice) == "[]") {
+    function editBottle(data) {
+        var $table = $('#bottles');
+        var bottle = $table.bootstrapTable('getSelections');
+        if (JSON.stringify(bottle) == "[]") {
             layer.alert("请先选择要进行修改的记录", {icon: 5, offset: '0px'});
         } else {
-            var noticeId = notice[0].noticeId;
+            var bottleId = bottle[0].bottleId;
             //alert(noticeId);
 
             mainIndex = layer.open({
                 type: 1,
-                title: '修改公告',
+                title: '修改漂流瓶',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: ['893px', '500px'],
                 content: $("#editDiv"),
                 success: function () {
-                    //$("#editNoticeForm")[0].reset();
+                    //$("#editBottleForm")[0].reset();
                     //装载新的数据
-                    $("editNoticeForm").val("dataFrm", data);
+                    $("editBottleForm").val("dataFrm", data);
                     $.ajax({
-                        url: '/sys/notice/findTargetNotice',
+                        url: '/business/bottle/findTargetBottle',
                         dataType: 'json',
                         type: 'post',
-                        data: {noticeId: noticeId},
+                        data: {bottleId: bottleId},
                         success: function (data) {
                             if (data.code == 0) {
                                 //layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
-                                $("#noticeId").val(data.notice.noticeId);
-                                $("#opername").val(data.notice.opername);
-                                $("#createtime").val(data.notice.createtime);
-                                $("#title").val(data.notice.title);
-                                $("#content1").val(data.notice.content);
+                                $("#bottleId").val(data.bottle.bottleId);
+                                $("#bottlecontent2").val(data.bottle.bottlecontent);
 
-                                var content="<p>"+data.notice.content+"</p>";
+                                var content=data.bottle.bottlecontent;
                                 $('#test1').summernote('code',content);
                             } else {
                                 layer.alert(data.msg, {icon: 5, offset: '0px'});
@@ -351,34 +429,32 @@
                         }
                     });
 
-                    //url="/sys/notice/editNotice";
+                    //url="/sys/notice/editBottle";
                 }
             });
         }
     }
 
-
-
     /**
      * 批量删除
      */
-    function removeSomeLogInfo() {
-        var notices= $('#notices').bootstrapTable('getSelections');
+    function removeSomeBottle() {
+        var bottles= $('#bottles').bootstrapTable('getSelections');
         // alert(notices[0].id);
         var ids = new Array();
-        for (var i = 0; i <notices.length ; i++) {
-            ids[i]=notices[i].noticeId;
+        for (var i = 0; i <bottles.length ; i++) {
+            ids[i]=bottles[i].bottleId;
         }
         if (ids.length==0){
-            layer.msg("请选择要删除的公告",{icon:5});
+            layer.msg("请选择要删除的漂流瓶",{icon:5});
             return;
         }else {
-            layer.confirm('你是否确定要删除选定的公告？', {
+            layer.confirm('你是否确定要删除选定的漂流瓶？', {
                 btn: ['确定','取消'] //按钮
             }, function(){
                 ids=JSON.stringify(ids);
                 $.ajax({
-                    url:'/sys/notice/batchDeleteNotices',
+                    url:'/business/bottle/batchDeleteBottle',
                     dataType:'json',
                     type:'post',
                     data:{ids:ids},
@@ -397,16 +473,16 @@
     }
 
     function remove(data){
-        layer.confirm('你是否确定要删除该条公告？', {
+        layer.confirm('你是否确定要删除该条漂流瓶？', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var value = $(data).parent().parent().find("td");
-            var noticeId=value.eq(1).text().toString().trim();
+            var bottleId=value.eq(1).text().toString().trim();
             $.ajax({
-                url:'/sys/notice/deleteTargetNotice',
+                url:'/business/bottle/deleteTargetBottle',
                 dataType:'json',
                 type:'post',
-                data:{noticeId:noticeId},
+                data:{bottleId:bottleId},
                 success:function(data){
                     if (data.code == 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
@@ -423,6 +499,33 @@
 
     }
 
+    function removeBottleMessage(data){
+        layer.confirm('你是否确定要删除该条漂流瓶？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var value = $(data).parent().parent().find("td");
+            var bmId=value.eq(1).text().toString().trim();
+            var bottleId=value.eq(2).text().toString().trim();
+            $.ajax({
+                url:'/business/bottleMessage/deleteTargetBottleMessage',
+                dataType:'json',
+                type:'post',
+                data:{bmId:bmId},
+                success:function(data){
+                    if (data.code == 0) {
+                        layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
+                        refreshCommentTable(bottleId);
+                    } else {
+                        layer.alert(data.msg, {icon: 5, offset: '0px'});
+                    }
+                }
+            });
+        }, function(){
+
+        });
+
+
+    }
 
     $(document).ready(function () {
         $("#test").summernote({
@@ -460,13 +563,10 @@
 
     $("#doSubmit").click(function(){
         //同步富文本和textarea里面的内容
-        var text = $($("#test").summernote("code")).text();
-        //var text = $($("#test").summernote("code"));
-
-        $("#content").val(text);
-        //return;
-        var data=$("#addNoticeForm").serialize();
-        $.post("/sys/notice/addNotice",data,function(res){
+        var text = $("#test").summernote("code");
+        $("#bottlecontent1").val(text);
+        var data=$("#addBottleForm").serialize();
+        $.post("/business/bottle/addBottle",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -477,11 +577,11 @@
 
     $("#doSubmit1").click(function(){
         //同步富文本和textarea里面的内容
-        var text01 = $($("#test1").summernote("code")).text();
+        var text01 = $("#test1").summernote("code");
         //var text = $($("#test").summernote("code"));
-        $("#content1").val(text01);
-        var data=$("#editNoticeForm").serialize();
-        $.post("/sys/notice/editNotice",data,function(res){
+        $("#bottlecontent2").val(text01);
+        var data=$("#editBottleForm").serialize();
+        $.post("/business/bottle/editBottle",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -490,44 +590,24 @@
         });
     });
 
-
     //弹出查看层
-    function showNotice(data){
+    function showComment(data){
         mainIndex=layer.open({
-            type:1,
-            content:$("#showNoticeDiv"),
-            area:['800px','300px'],
-            title:'查看公告',
+            type: 1,
+            title: '查看漂流瓶',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '500px'],
+            content: $("#showBottleMessageDiv"),
             success:function(){
                 var value = $(data).parent().parent().find("td");
-                var noticeId=value.eq(1).text().toString().trim();
-                $.ajax({
-                    url:'/sys/notice/findTargetNotice',
-                    dataType:'json',
-                    type:'post',
-                    data:{noticeId:noticeId},
-                    success:function(data){
-                        if(data.code==0){
-                            var notice=data.notice;
-                            $("#show_title").html(notice.title);
-                            $("#show_opername").html(notice.opername);
-                            $("#show_createtime").html(notice.createtime);
-
-                            var content="<lable style='font-size: 16px;'>"+notice.content+"</lable>";
-                            $("#show_content").html(content);
-                        }else{
-                            layer.alert(data.msg, {icon: 5, offset: '0px'});
-                        }
-
-                    }
-                });
-
-
-
-
+                var bottleId=value.eq(1).text().toString().trim();
+                refreshCommentTable(bottleId)
             }
         });
     }
+
 </script>
 
 <%--日期选择--%>

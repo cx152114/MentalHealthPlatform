@@ -74,7 +74,7 @@ public class ActivityApplyController {
         return R.ok();
     }
 
-    @RequestMapping(value = "deleteTargetActivityApply")
+    @RequestMapping(value = "/deleteTargetActivityApply")
     @RequiresPermissions("business:activityApply:remove")
     @ResponseBody
     public R deleteTargetActivityApply(Integer applyId){
@@ -96,5 +96,28 @@ public class ActivityApplyController {
         activityApplyService.removeByIds(list);
         return R.ok("删除成功");
     }
+
+    @RequestMapping(value = "/agreeTargetApply")
+    @RequiresPermissions("business:activityApply:agreeApply")
+    @ResponseBody
+    public R agreeTargetApply(Integer applyId){
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("apply_id",applyId);
+        activityApplyService.update(queryWrapper,applyId,1);
+        return R.ok("修改成功");
+    }
+
+    @RequestMapping(value = "/refuseTargetApply")
+    @RequiresPermissions("business:activityApply:refuseApply")
+    @ResponseBody
+    public R refuseTargetApply(Integer applyId){
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("apply_id",applyId);
+        activityApplyService.update(queryWrapper,applyId,2);
+        return R.ok("修改成功");
+    }
+
+
+
 
 }

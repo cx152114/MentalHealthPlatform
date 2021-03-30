@@ -60,13 +60,13 @@
 <div class="row">
     <div class="btn-group-sm" id="toolbar" role="group">
         <shiro:hasPermission name="business:message:add">
-            <a href="javascript:void(0)" class="btn btn-success"    onclick="addNotice()"><i class="fa fa-plus"></i> 新增</a>
+            <a href="javascript:void(0)" class="btn btn-success"    onclick="addMessage()"><i class="fa fa-plus"></i> 新增</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:message:edit">
-            <a href="javascript:void(0)" class="btn btn-primary" onclick="editNotice()"><i class="fa fa-edit"></i> 修改</a>
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="editMessage()"><i class="fa fa-edit"></i> 修改</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:message:batchRemove">
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeLogInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeMessage()"><i class="fa fa-trash-o"></i> 批量删除</a>
         </shiro:hasPermission>
     </div>
     <!-- /col-md-12 -->
@@ -78,13 +78,13 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            公告标题：<input type="text" id="title1" name="title"/>
+                            留言板内容：<input type="text" id="messageContent" name="messageContent"/>
                         </li>
                         <li>
-                            发布人：<input type="text" id="opername1" name="opername"/>
+                            用户编号：<input type="text" id="uId" name="uId"/>
                         </li>
                         <li class="select-time">
-                            <label>登录时间： </label>
+                            <label>发布时间： </label>
                             <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
                             <span>-</span>
                             <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
@@ -117,24 +117,38 @@
         </div>
     </div>
     <!-- /col-md-12 -->
+
+    <%--<div class="btn-group-sm" id="toolbar1" role="group">
+        <shiro:hasPermission name="business:message:add">
+            <a href="javascript:void(0)" class="btn btn-success"    onclick="addMessage()"><i class="fa fa-plus"></i> 新增</a>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="business:message:edit">
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="editMessage()"><i class="fa fa-edit"></i> 修改</a>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="business:message:batchRemove">
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeMessage()"><i class="fa fa-trash-o"></i> 批量删除</a>
+        </shiro:hasPermission>
+    </div>--%>
+    <!-- /col-md-12 -->
 </div>
 
-<%--添加公告开始--%>
+<%--添加留言开始--%>
 <div style="display: none;padding: 5px" id="addOrUpdateDiv">
     <div class="panel-body">
-            <form class="form-horizontal style-form" id="addNoticeForm" action="" method="post">
+            <form class="form-horizontal style-form" id="addMessageForm" action="" method="post">
                     <div class="col-sm-12" >
                         <div>
-                            <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                            <input type="text" class="form-control" name="title" placeholder="公告标题" style="width: 60%">
+                            <label for="selectUserId" class="control-label">接收人：</label>
+                            <select class="form-control"  style="width: 100px;" id="selectUserId" name="receiveId">
+                                <option style='display: none'></option>
+                            </select>
                         </div>
-                        <br>
                         <div class="box float-e-margins">
                             <div class="box-title">
-                                <h4>编辑/保存公告内容</h4>
+                                <h4>编辑/保存留言内容</h4>
                             </div>
                             <div class="box-body" id="eg">
-                                <textarea name="content" id="content" class="form-control summernote" style="display: none;"></textarea>
+                                <textarea name="messageContent" id="messageContent1" class="form-control summernote" style="display: none;"></textarea>
                                 <div id="test" class="note-editor note-frame panel panel-default"></div></div>
                             </div>
                         </div>
@@ -146,37 +160,31 @@
     </div>
     <small class="font-bold"></small>
 </div>
-<%--添加公告结束--%>
+<%--添加留言结束--%>
 
-<%--修改公告开始--%>
+<%--修改留言开始--%>
 <div style="display: none;padding: 5px" id="editDiv">
     <div class="panel-body">
-        <form class="form-horizontal style-form" id="editNoticeForm" action="" method="post">
+        <form class="form-horizontal style-form" id="editMessageForm" action="" method="post">
             <div class="col-sm-12" >
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告编号</label>
-                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%" >
+                <div style="display: none">
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">留言编号</label>
+                    <input type="text" class="form-control" id="messageId" name="messageId" placeholder="留言编号" style="width: 60%" >
                 </div>
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布人</label>
-                    <input type="text" class="form-control" id="opername" name="opername" placeholder="发布人" style="width: 60%" >
+                    <!--联系人的选择-->
+                    <label for="selUserId1" class="control-label">测试人：</label>
+                    <select class="form-control"  style="width: 100px;" id="selUserId1" name="receiveId">
+                        <option style='display: none'></option>
+                    </select>
                 </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布时间</label>
-                    <input type="text" class="form-control" id="createtime" name="createtime1" placeholder="发布时间" style="width: 60%" >
-                </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="公告标题" style="width: 60%">
-                </div>
-
                 <br>
                 <div class="box float-e-margins">
                     <div class="box-title">
-                        <h4>编辑/保存公告内容</h4>
+                        <h4>编辑/保存留言内容</h4>
                     </div>
                     <div class="box-body" id="eg1">
-                        <textarea name="content" id="content1" class="form-control summernote" style="display: none;"></textarea>
+                        <textarea name="messageContent" id="messageContent2" class="form-control summernote" style="display: none;"></textarea>
                         <div id="test1" class="note-editor note-frame panel panel-default"></div></div>
                 </div>
             </div>
@@ -188,22 +196,30 @@
 </div>
 <small class="font-bold"></small>
 </div>
-<%--修改公告结束--%>
+<%--修改留言结束--%>
 
 
 
-<%--查看公告开始--%>
-<div style="display: none;padding: 5px" id="showNoticeDiv">
-    <h3 id="show_title" align="center"></h3>
-    <div style="text-align: right;">
-        发布人:<span id="show_opername"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-        发布时间:<span id="show_createtime"></span>
-    </div>
-    <hr>
-    <div id="show_content" ></div>
-
+<%--查看留言开始--%>
+<div style="display: none;padding: 5px" id="showCommentDiv">
+    <h3 id="show_title" align="center">留言板详情</h3>
+    <table class="table table-hover rowSameHeight"
+           data-toggle="table"
+           id="comments"
+           data-toolbar="#toolbar1"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-fullscreen="true"
+           data-show-columns="true"
+           data-show-columns-toggle-all="true"
+           data-click-to-select="true"
+           data-show-pagination-switch="true"
+           data-pagination="true"
+           data-page-list="[5,10,25,50,100,all]">
+        <hr/>
+    </table>
 </div>
-<%--查看公告结束--%>
+<%--查看留言结束--%>
 
 
 <!-- js placed at the end of the document so the pages load faster -->
@@ -241,7 +257,7 @@
         uniqueId: "messageId",                 //  每一行的唯一标识，一般为主键列
         cache: false,                       //  设置为 false 禁用 AJAX 数据缓存， 默认为true
         pagination: true,                   //  是否显示分页
-        sidePagination: "server",           //  分页方式：client客户端分页，server服务端分页
+        sidePagination: "client",           //  分页方式：client客户端分页，server服务端分页
         pageSize: 5,                       //  每页的记录行数
         queryParamsType: '',
         queryParams: function (param) {
@@ -249,9 +265,10 @@
                 current: param.pageNumber, // 当前页 1
                 size: param.pageSize,      // 一页显示多少天 10
                 uId:$("#uId").val(),
+                messageContent:$("#messageContent").val(),
                 startTime:$("#startTime").val(),
-                endTime:$("#endTime").val(),
-                messageStatus:$("#messageStatus").val()
+                endTime:$("#endTime").val()
+                //messageStatus:$("#messageStatus").val()
             }
         },
         columns: [
@@ -262,7 +279,30 @@
                 title: 'ID'
             }, {
                 field: 'uId',
-                title: '用户编号'
+                title: '用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.user.userId;
+                }
+            }, {
+                field: 'username',
+                title: '发布用户',
+                formatter: function(value, item, index) {
+                    return item.user.username;
+                }
+            }, {
+                field: 'receiveId',
+                title: '目标用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.receiveUser.userId;
+                }
+            }, {
+                field: 'username',
+                title: '目标用户',
+                formatter: function(value, item, index) {
+                    return item.receiveUser.username;
+                }
             }, {
                 field: 'messageContent',
                 title: '内容'
@@ -271,16 +311,102 @@
                 title: '时间'
             }, {
                 field: 'messageStatus',
-                title: '状态'
+                title: '状态',
+                visible:false,
+                formatter: function(value, item, index) {
+                    if (value==0){
+                        return "<span class=\"label label-default\">未审核</span>";
+                    }
+                    if (value==1){
+                        return "<span class=\"label label-success\">审核通过</span>";
+                    }
+                    if (value==2){
+                        return "<span class=\"label label-warning\">审核未通过</span>";
+                    }
+                }
             },{
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:message:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:notice:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showNotice(this)\">查看</button></shiro:hasPermission>";
+                    return "<shiro:hasPermission name="business:message:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:message:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showComment(this)\">查看</button></shiro:hasPermission>";
 
                 }
             }]
     });
+
+
+    // 初始化表格数据
+    var dataTable1 = $('#comments').bootstrapTable({
+        url: "/business/comment/findTargetComments",                      //  请求后台的URL
+        method: "get",                      //  请求方式
+        uniqueId: "commentId",                 //  每一行的唯一标识，一般为主键列
+        cache: false,                       //  设置为 false 禁用 AJAX 数据缓存， 默认为true
+        pagination: true,                   //  是否显示分页
+        sidePagination: "client",           //  分页方式：client客户端分页，server服务端分页
+        pageSize: 5,                       //  每页的记录行数
+        queryParamsType: '',
+        queryParams: function (param) {
+            return {
+                current: param.pageNumber, // 当前页 1
+                size: param.pageSize,      // 一页显示多少天 10
+                messageId:param.messageId
+            }
+        },
+        columns: [
+            {
+                checkbox: true
+            }, {
+                field: 'commentId',
+                title: 'ID'
+            }, {
+                field: 'messageId',
+                title: '留言板编号'
+            }, {
+                field: 'sendUserId',
+                title: '发送用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.sendUser.userId;
+                }
+            }, {
+                field: 'sendUserName',
+                title: '发送用户',
+                formatter: function(value, item, index) {
+                    return item.sendUser.username;
+                }
+            }, {
+                field: 'content',
+                title: '内容'
+            }, {
+                field: 'createTime',
+                title: '时间'
+            }, {
+                field: 'receiveUserId',
+                title: '接收用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.receiveUser.userId;
+                }
+            }, {
+                field: 'receiveUserName',
+                title: '接收用户',
+                formatter: function(value, item, index) {
+                    return item.receiveUser.username;
+                }
+            }, {
+                field: 'commentStatus',
+                title: '状态',
+                visible:false
+            },{
+                title:'操作',
+                field: 'active',
+                formatter: function(value, item, index) {
+                    return "<shiro:hasPermission name="business:comment:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"removeComment(this)\">删除</button></shiro:hasPermission>";
+                }
+            }]
+    });
+
+
 
     // 查询
     $('#btn-search').bind('click', function () {
@@ -290,9 +416,19 @@
     // 刷新表格
     function refreshTable() {
         dataTable.bootstrapTable('refresh', {
-            url: "/business/bottle/findAllBottle",
+            url: "/business/message/findAllMessage",
             pageSize: 5,
             pageNumber: 1
+        });
+    }
+
+    // 刷新表格
+    function refreshCommentTable(date) {
+        dataTable1.bootstrapTable('refresh', {
+            url: "/business/comment/findTargetComments/"+date,
+            pageSize: 5,
+            pageNumber: 1,
+            messageId:date
         });
     }
 
@@ -300,10 +436,10 @@
     var mainIndex;
 
     //iframe窗
-    function addNotice() {
+    function addMessage() {
         mainIndex=layer.open({
             type: 1,
-            title: '新增公告',
+            title: '新增留言',
             shadeClose: true,
             shade: false,
             maxmin: true, //开启最大化最小化按钮
@@ -312,42 +448,39 @@
         });
     }
 
-    function editNotice(data) {
-        var $table = $('#notices');
-        var notice = $table.bootstrapTable('getSelections');
-        if (JSON.stringify(notice) == "[]") {
+    function editMessage(data) {
+        var $table = $('#messages');
+        var message = $table.bootstrapTable('getSelections');
+        if (JSON.stringify(message) == "[]") {
             layer.alert("请先选择要进行修改的记录", {icon: 5, offset: '0px'});
         } else {
-            var noticeId = notice[0].noticeId;
+            var messageId = message[0].messageId;
             //alert(noticeId);
 
             mainIndex = layer.open({
                 type: 1,
-                title: '修改公告',
+                title: '修改留言',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: ['893px', '500px'],
                 content: $("#editDiv"),
                 success: function () {
-                    //$("#editNoticeForm")[0].reset();
+                    //$("#editMessageForm")[0].reset();
                     //装载新的数据
-                    $("editNoticeForm").val("dataFrm", data);
+                    $("editMessageForm").val("dataFrm", data);
                     $.ajax({
-                        url: '/sys/notice/findTargetNotice',
+                        url: '/business/message/findTargetMessage',
                         dataType: 'json',
                         type: 'post',
-                        data: {noticeId: noticeId},
+                        data: {messageId: messageId},
                         success: function (data) {
                             if (data.code == 0) {
                                 //layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
-                                $("#noticeId").val(data.notice.noticeId);
-                                $("#opername").val(data.notice.opername);
-                                $("#createtime").val(data.notice.createtime);
-                                $("#title").val(data.notice.title);
-                                $("#content1").val(data.notice.content);
-
-                                var content="<p>"+data.notice.content+"</p>";
+                                $("#messageId").val(data.message.messageId);
+                                $("#selUserId1").val(data.message.receiveId);
+                                $("#messageContent2").val(data.message.messageContent);
+                                var content=data.message.messageContent;
                                 $('#test1').summernote('code',content);
                             } else {
                                 layer.alert(data.msg, {icon: 5, offset: '0px'});
@@ -355,34 +488,32 @@
                         }
                     });
 
-                    //url="/sys/notice/editNotice";
+                    //url="/sys/notice/editMessage";
                 }
             });
         }
     }
 
-
-
     /**
      * 批量删除
      */
-    function removeSomeLogInfo() {
-        var notices= $('#notices').bootstrapTable('getSelections');
+    function removeSomeMessage() {
+        var messages= $('#messages').bootstrapTable('getSelections');
         // alert(notices[0].id);
         var ids = new Array();
-        for (var i = 0; i <notices.length ; i++) {
-            ids[i]=notices[i].noticeId;
+        for (var i = 0; i <messages.length ; i++) {
+            ids[i]=messages[i].messageId;
         }
         if (ids.length==0){
-            layer.msg("请选择要删除的公告",{icon:5});
+            layer.msg("请选择要删除的留言",{icon:5});
             return;
         }else {
-            layer.confirm('你是否确定要删除选定的公告？', {
+            layer.confirm('你是否确定要删除选定的留言？', {
                 btn: ['确定','取消'] //按钮
             }, function(){
                 ids=JSON.stringify(ids);
                 $.ajax({
-                    url:'/sys/notice/batchDeleteNotices',
+                    url:'/business/message/batchDeleteMessage',
                     dataType:'json',
                     type:'post',
                     data:{ids:ids},
@@ -401,16 +532,16 @@
     }
 
     function remove(data){
-        layer.confirm('你是否确定要删除该条公告？', {
+        layer.confirm('你是否确定要删除该条留言？', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var value = $(data).parent().parent().find("td");
-            var noticeId=value.eq(1).text().toString().trim();
+            var messageId=value.eq(1).text().toString().trim();
             $.ajax({
-                url:'/sys/notice/deleteTargetNotice',
+                url:'/business/message/deleteTargetMessage',
                 dataType:'json',
                 type:'post',
-                data:{noticeId:noticeId},
+                data:{messageId:messageId},
                 success:function(data){
                     if (data.code == 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
@@ -426,6 +557,36 @@
 
 
     }
+
+    function removeComment(data){
+        layer.confirm('你是否确定要删除该条留言？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var value = $(data).parent().parent().find("td");
+            var commentId=value.eq(1).text().toString().trim();
+            var messageId=value.eq(2).text().toString().trim();
+            $.ajax({
+                url:'/business/comment/deleteTargetComment',
+                dataType:'json',
+                type:'post',
+                data:{commentId:commentId},
+                success:function(data){
+                    if (data.code == 0) {
+                        layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
+                        refreshCommentTable(messageId);
+                    } else {
+                        layer.alert(data.msg, {icon: 5, offset: '0px'});
+                    }
+                }
+            });
+        }, function(){
+
+        });
+
+
+    }
+
+
 
 
     $(document).ready(function () {
@@ -464,13 +625,13 @@
 
     $("#doSubmit").click(function(){
         //同步富文本和textarea里面的内容
-        var text = $($("#test").summernote("code")).text();
+        var text = $("#test").summernote("code");
         //var text = $($("#test").summernote("code"));
 
-        $("#content").val(text);
+        $("#messageContent1").val(text);
         //return;
-        var data=$("#addNoticeForm").serialize();
-        $.post("/sys/notice/addNotice",data,function(res){
+        var data=$("#addMessageForm").serialize();
+        $.post("/business/message/addMessage",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -481,11 +642,11 @@
 
     $("#doSubmit1").click(function(){
         //同步富文本和textarea里面的内容
-        var text01 = $($("#test1").summernote("code")).text();
+        var text01 = $("#test1").summernote("code");
         //var text = $($("#test").summernote("code"));
-        $("#content1").val(text01);
-        var data=$("#editNoticeForm").serialize();
-        $.post("/sys/notice/editNotice",data,function(res){
+        $("#messageContent2").val(text01);
+        var data=$("#editMessageForm").serialize();
+        $.post("/business/message/editMessage",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -496,42 +657,46 @@
 
 
     //弹出查看层
-    function showNotice(data){
+    function showComment(data){
         mainIndex=layer.open({
-            type:1,
-            content:$("#showNoticeDiv"),
-            area:['800px','300px'],
-            title:'查看公告',
+            type: 1,
+            title: '新增留言',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '500px'],
+            content: $("#showCommentDiv"),
             success:function(){
                 var value = $(data).parent().parent().find("td");
-                var noticeId=value.eq(1).text().toString().trim();
-                $.ajax({
-                    url:'/sys/notice/findTargetNotice',
-                    dataType:'json',
-                    type:'post',
-                    data:{noticeId:noticeId},
-                    success:function(data){
-                        if(data.code==0){
-                            var notice=data.notice;
-                            $("#show_title").html(notice.title);
-                            $("#show_opername").html(notice.opername);
-                            $("#show_createtime").html(notice.createtime);
-
-                            var content="<lable style='font-size: 16px;'>"+notice.content+"</lable>";
-                            $("#show_content").html(content);
-                        }else{
-                            layer.alert(data.msg, {icon: 5, offset: '0px'});
-                        }
-
-                    }
-                });
-
-
-
-
+                var messageId=value.eq(1).text().toString().trim();
+                refreshCommentTable(messageId)
             }
         });
     }
+
+    /**
+     * 获取所需要的员工信息
+     */
+    $(document).ready(function(){
+        $.ajax({
+            url:'/user/getTargetUsers',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+                if(data.code==0){
+                    var userList=data.userList;
+                    $.each(userList,function(i,item){
+                        $("#selectUserId").append("<option value='"+item.userId+"'>"+item.username+"</option>");
+                        $("#selUserId1").append("<option value='"+item.userId+"'>"+item.username+"</option>");
+                        i++;
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 5, offset: '0px'});
+                }
+
+            }
+        });
+    });
 </script>
 
 <%--日期选择--%>

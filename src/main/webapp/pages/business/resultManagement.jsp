@@ -60,13 +60,13 @@
 <div class="row">
     <div class="btn-group-sm" id="toolbar" role="group">
         <shiro:hasPermission name="business:result:add">
-            <a href="javascript:void(0)" class="btn btn-success"    onclick="addNotice()"><i class="fa fa-plus"></i> 新增</a>
+            <a href="javascript:void(0)" class="btn btn-success"    onclick="addResult()"><i class="fa fa-plus"></i> 新增</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:result:edit">
-            <a href="javascript:void(0)" class="btn btn-primary" onclick="editNotice()"><i class="fa fa-edit"></i> 修改</a>
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="editResult()"><i class="fa fa-edit"></i> 修改</a>
         </shiro:hasPermission>
         <shiro:hasPermission name="business:result:batchRemove">
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeLogInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeResult()"><i class="fa fa-trash-o"></i> 批量删除</a>
         </shiro:hasPermission>
     </div>
     <!-- /col-md-12 -->
@@ -78,16 +78,29 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            公告标题：<input type="text" id="title1" name="title"/>
+                            用户编号：<input type="text" id="uId" name="uId"/>
                         </li>
                         <li>
-                            发布人：<input type="text" id="opername1" name="opername"/>
+                            <!--测试试题类型的选择-->
+                            <label for="selectExamType" class="control-label">题目类别：</label>
+                            <select class="form-control"  style="width: 120px;" id="selectExamType" name="examType">
+                                <option style='display: none'></option>
+                                <option value="综合测试">综合测试</option>
+                                <option value="日常交往">日常交往</option>
+                                <option value="人格检测">人格检测</option>
+                                <option value="情感测试">情感测试</option>
+                            </select>
                         </li>
-                        <li class="select-time">
-                            <label>登录时间： </label>
-                            <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
-                            <span>-</span>
-                            <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+                        <li>
+                            <!--测试成绩的选择-->
+                            <label for="selectResultLevel" class="control-label">结果等级：</label>
+                            <select class="form-control"  style="width: 120px;" id="selectResultLevel" name="resultLevel">
+                                <option style='display: none'></option>
+                                <option value="合格">合格</option>
+                                <option value="不合格">不合格</option>
+                                <option value="良好">良好</option>
+                                <option value="优秀">优秀</option>
+                            </select>
                         </li>
                         <li>
                             <a class="btn btn-primary btn-rounded btn-sm" id="btn-search"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -102,6 +115,7 @@
             <table class="table table-hover rowSameHeight"
                    data-toggle="table"
                    id="results"
+                   data-search="true"
                    data-toolbar="#toolbar"
                    data-show-refresh="true"
                    data-show-toggle="true"
@@ -119,91 +133,100 @@
     <!-- /col-md-12 -->
 </div>
 
-<%--添加公告开始--%>
+<%--添加测试成绩管理开始--%>
 <div style="display: none;padding: 5px" id="addOrUpdateDiv">
     <div class="panel-body">
-            <form class="form-horizontal style-form" id="addNoticeForm" action="" method="post">
+            <form class="form-horizontal style-form" id="addResultForm" action="" method="post">
                     <div class="col-sm-12" >
                         <div>
-                            <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                            <input type="text" class="form-control" name="title" placeholder="公告标题" style="width: 60%">
+                            <!--联系人的选择-->
+                            <label for="selectUserId" class="control-label">测试人：</label>
+                            <select class="form-control"  style="width: 100px;" id="selectUserId" name="uId">
+                                <option style='display: none'></option>
+                            </select>
                         </div>
-                        <br>
-                        <div class="box float-e-margins">
-                            <div class="box-title">
-                                <h4>编辑/保存公告内容</h4>
-                            </div>
-                            <div class="box-body" id="eg">
-                                <textarea name="content" id="content" class="form-control summernote" style="display: none;"></textarea>
-                                <div id="test" class="note-editor note-frame panel panel-default"></div></div>
-                            </div>
+                        <div>
+                            <label class="control-label" style="font-size:19px;margin-left: 5px;">分数</label>
+                            <input type="number" class="form-control" name="score" placeholder="分数" style="width: 60%">
                         </div>
+                        <div>
+                            <!--测试试题类型的选择-->
+                            <label for="selectExamType" class="control-label">题目类别：</label>
+                            <select class="form-control"  style="width: 120px;"  name="examType">
+                                <option style='display: none'></option>
+                                <option value="综合测试">综合测试</option>
+                                <option value="日常交往">日常交往</option>
+                                <option value="人格检测">人格检测</option>
+                                <option value="情感测试">情感测试</option>
+                            </select>
+                        </div>
+                    </div>
                     <button type="button" id="doSubmit" class="btn btn-primary">提交</button>
                     <button type="reset" class="btn btn-warning">重置</button>
-
             </form>
         </div>
     </div>
     <small class="font-bold"></small>
 </div>
-<%--添加公告结束--%>
+<%--添加测试成绩管理结束--%>
 
-<%--修改公告开始--%>
+<%--修改测试成绩管理开始--%>
 <div style="display: none;padding: 5px" id="editDiv">
     <div class="panel-body">
-        <form class="form-horizontal style-form" id="editNoticeForm" action="" method="post">
+        <form class="form-horizontal style-form" id="editResultForm" action="" method="post">
             <div class="col-sm-12" >
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告编号</label>
-                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%" >
+                <div style="display: none">
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">测试成绩编号</label>
+                    <input type="text" class="form-control" id="resultId" name="resultId" placeholder="测试成绩编号" style="width: 60%" >
                 </div>
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布人</label>
-                    <input type="text" class="form-control" id="opername" name="opername" placeholder="发布人" style="width: 60%" >
+                    <!--联系人的选择-->
+                    <label for="selUserId1" class="control-label">测试人：</label>
+                    <select class="form-control"  style="width: 100px;" id="selUserId1" name="uId">
+                        <option style='display: none'></option>
+                    </select>
                 </div>
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布时间</label>
-                    <input type="text" class="form-control" id="createtime" name="createtime1" placeholder="发布时间" style="width: 60%" >
+                    <label class="control-label" style="font-size:19px;margin-left: 5px;">分数</label>
+                    <input type="number" class="form-control" id="score" name="score" placeholder="分数" style="width: 60%">
                 </div>
                 <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="公告标题" style="width: 60%">
-                </div>
-
-                <br>
-                <div class="box float-e-margins">
-                    <div class="box-title">
-                        <h4>编辑/保存公告内容</h4>
-                    </div>
-                    <div class="box-body" id="eg1">
-                        <textarea name="content" id="content1" class="form-control summernote" style="display: none;"></textarea>
-                        <div id="test1" class="note-editor note-frame panel panel-default"></div></div>
+                    <!--测试试题类型的选择-->
+                    <label for="selectExamType" class="control-label">题目类别：</label>
+                    <select class="form-control"  style="width: 120px;" id="examType"  name="examType">
+                        <option style='display: none'></option>
+                        <option value="综合测试">综合测试</option>
+                        <option value="日常交往">日常交往</option>
+                        <option value="人格检测">人格检测</option>
+                        <option value="情感测试">情感测试</option>
+                    </select>
                 </div>
             </div>
             <button type="button" id="doSubmit1" class="btn btn-primary">提交</button>
             <button type="reset" class="btn btn-warning">重置</button>
-
         </form>
     </div>
 </div>
 <small class="font-bold"></small>
 </div>
-<%--修改公告结束--%>
+<%--修改测试成绩管理结束--%>
 
 
 
-<%--查看公告开始--%>
-<div style="display: none;padding: 5px" id="showNoticeDiv">
-    <h3 id="show_title" align="center"></h3>
+<%--查看测试成绩管理开始--%>
+<div style="display: none;padding: 5px" id="showResultDiv">
+    <h3 id="showResultLevel" align="center"></h3>
     <div style="text-align: right;">
-        发布人:<span id="show_opername"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-        发布时间:<span id="show_createtime"></span>
+        测试人:<span id="showUsername"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        测试类型:<span id="showExamType"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        结果级别：<font id="showScore" color="red"></font>
     </div>
     <hr>
-    <div id="show_content" ></div>
-
+    <div id="showDescription" ></div>
+    <hr>
+    <h5 id="showSuggest"></h5>
 </div>
-<%--查看公告结束--%>
+<%--查看测试成绩管理结束--%>
 
 
 <!-- js placed at the end of the document so the pages load faster -->
@@ -241,15 +264,16 @@
         uniqueId: "resultId",                 //  每一行的唯一标识，一般为主键列
         cache: false,                       //  设置为 false 禁用 AJAX 数据缓存， 默认为true
         pagination: true,                   //  是否显示分页
-        sidePagination: "server",           //  分页方式：client客户端分页，server服务端分页
+        sidePagination: "client",           //  分页方式：client客户端分页，server服务端分页
         pageSize: 5,                       //  每页的记录行数
         queryParamsType: '',
         queryParams: function (param) {
             return {
                 current: param.pageNumber, // 当前页 1
                 size: param.pageSize,      // 一页显示多少天 10
-                examType:$("#examType").val(),
-                uId: $("#uId").val()
+                examType:$("#selectExamType").val(),
+                uId: $("#uId").val(),
+                resultLevel:$("#selectResultLevel").val()
             }
         },
         columns: [
@@ -260,16 +284,28 @@
                 title: 'ID'
             }, {
                 field: 'uId',
-                title: '用户编号'
+                title: '用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.user.userId;
+                }
+            }, {
+                field: 'username',
+                title: '用户名',
+                formatter: function(value, item, index) {
+                    return item.user.username;
+                }
             }, {
                 field: 'score',
                 title: '测评分数'
             }, {
                 field: 'description',
-                title: '描述'
+                title: '描述',
+                visible:false
             }, {
                 field: 'suggest',
-                title: '建议'
+                title: '建议',
+                visible:false
             }, {
                 field: 'resultLevel',
                 title: '结果等级'
@@ -280,7 +316,7 @@
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:result:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:notice:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showNotice(this)\">查看</button></shiro:hasPermission>";
+                    return "<shiro:hasPermission name="business:result:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:result:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showResult(this)\">查看</button></shiro:hasPermission>";
 
                 }
             }]
@@ -304,10 +340,10 @@
     var mainIndex;
 
     //iframe窗
-    function addNotice() {
+    function addResult() {
         mainIndex=layer.open({
             type: 1,
-            title: '新增公告',
+            title: '新增测试成绩管理',
             shadeClose: true,
             shade: false,
             maxmin: true, //开启最大化最小化按钮
@@ -316,50 +352,44 @@
         });
     }
 
-    function editNotice(data) {
-        var $table = $('#notices');
-        var notice = $table.bootstrapTable('getSelections');
-        if (JSON.stringify(notice) == "[]") {
+    function editResult(data) {
+        var $table = $('#results');
+        var result = $table.bootstrapTable('getSelections');
+        if (JSON.stringify(result) == "[]") {
             layer.alert("请先选择要进行修改的记录", {icon: 5, offset: '0px'});
         } else {
-            var noticeId = notice[0].noticeId;
-            //alert(noticeId);
-
+            var resultId = result[0].resultId;
             mainIndex = layer.open({
                 type: 1,
-                title: '修改公告',
+                title: '修改测试成绩',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: ['893px', '500px'],
                 content: $("#editDiv"),
                 success: function () {
-                    //$("#editNoticeForm")[0].reset();
+                    //$("#editResultForm")[0].reset();
                     //装载新的数据
-                    $("editNoticeForm").val("dataFrm", data);
+                    $("editResultForm").val("dataFrm", data);
                     $.ajax({
-                        url: '/sys/notice/findTargetNotice',
+                        url: '/business/result/findTargetResult',
                         dataType: 'json',
                         type: 'post',
-                        data: {noticeId: noticeId},
+                        data: {resultId: resultId},
                         success: function (data) {
                             if (data.code == 0) {
                                 //layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
-                                $("#noticeId").val(data.notice.noticeId);
-                                $("#opername").val(data.notice.opername);
-                                $("#createtime").val(data.notice.createtime);
-                                $("#title").val(data.notice.title);
-                                $("#content1").val(data.notice.content);
-
-                                var content="<p>"+data.notice.content+"</p>";
-                                $('#test1').summernote('code',content);
+                                $("#resultId").val(data.result.resultId);
+                                $("#examType").val(data.result.examType);
+                                $("#score").val(data.result.score);
+                                $("#selUserId1").val(data.result.uId);
                             } else {
                                 layer.alert(data.msg, {icon: 5, offset: '0px'});
                             }
                         }
                     });
 
-                    //url="/sys/notice/editNotice";
+                    //url="/sys/notice/editResult";
                 }
             });
         }
@@ -370,23 +400,22 @@
     /**
      * 批量删除
      */
-    function removeSomeLogInfo() {
-        var notices= $('#notices').bootstrapTable('getSelections');
-        // alert(notices[0].id);
+    function removeSomeResult() {
+        var results= $('#results').bootstrapTable('getSelections');
         var ids = new Array();
-        for (var i = 0; i <notices.length ; i++) {
-            ids[i]=notices[i].noticeId;
+        for (var i = 0; i <results.length ; i++) {
+            ids[i]=results[i].resultId;
         }
         if (ids.length==0){
-            layer.msg("请选择要删除的公告",{icon:5});
+            layer.msg("请选择要删除的心理测试",{icon:5});
             return;
         }else {
-            layer.confirm('你是否确定要删除选定的公告？', {
+            layer.confirm('你是否确定要删除选定的心理测试？', {
                 btn: ['确定','取消'] //按钮
             }, function(){
                 ids=JSON.stringify(ids);
                 $.ajax({
-                    url:'/sys/notice/batchDeleteNotices',
+                    url:'/business/result/batchDeleteResult',
                     dataType:'json',
                     type:'post',
                     data:{ids:ids},
@@ -405,16 +434,16 @@
     }
 
     function remove(data){
-        layer.confirm('你是否确定要删除该条公告？', {
+        layer.confirm('你是否确定要删除该条心理测试？', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var value = $(data).parent().parent().find("td");
-            var noticeId=value.eq(1).text().toString().trim();
+            var resultId=value.eq(1).text().toString().trim();
             $.ajax({
-                url:'/sys/notice/deleteTargetNotice',
+                url:'/business/result/deleteTargetResult',
                 dataType:'json',
                 type:'post',
-                data:{noticeId:noticeId},
+                data:{resultId:resultId},
                 success:function(data){
                     if (data.code == 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
@@ -468,13 +497,8 @@
 
     $("#doSubmit").click(function(){
         //同步富文本和textarea里面的内容
-        var text = $($("#test").summernote("code")).text();
-        //var text = $($("#test").summernote("code"));
-
-        $("#content").val(text);
-        //return;
-        var data=$("#addNoticeForm").serialize();
-        $.post("/sys/notice/addNotice",data,function(res){
+        var data=$("#addResultForm").serialize();
+        $.post("/business/result/addResult",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -484,12 +508,8 @@
     });
 
     $("#doSubmit1").click(function(){
-        //同步富文本和textarea里面的内容
-        var text01 = $($("#test1").summernote("code")).text();
-        //var text = $($("#test").summernote("code"));
-        $("#content1").val(text01);
-        var data=$("#editNoticeForm").serialize();
-        $.post("/sys/notice/editNotice",data,function(res){
+        var data=$("#editResultForm").serialize();
+        $.post("/business/result/editResult",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
                 refreshTable();
@@ -500,42 +520,65 @@
 
 
     //弹出查看层
-    function showNotice(data){
+    function showResult(data){
         mainIndex=layer.open({
             type:1,
-            content:$("#showNoticeDiv"),
+            content:$("#showResultDiv"),
             area:['800px','300px'],
-            title:'查看公告',
+            title:'查看测试成绩',
             success:function(){
                 var value = $(data).parent().parent().find("td");
-                var noticeId=value.eq(1).text().toString().trim();
+                var resultId=value.eq(1).text().toString().trim();
                 $.ajax({
-                    url:'/sys/notice/findTargetNotice',
+                    url:'/business/result/findTargetResult',
                     dataType:'json',
                     type:'post',
-                    data:{noticeId:noticeId},
+                    data:{resultId:resultId},
                     success:function(data){
                         if(data.code==0){
-                            var notice=data.notice;
-                            $("#show_title").html(notice.title);
-                            $("#show_opername").html(notice.opername);
-                            $("#show_createtime").html(notice.createtime);
-
-                            var content="<lable style='font-size: 16px;'>"+notice.content+"</lable>";
-                            $("#show_content").html(content);
+                            var result=data.result;
+                            $("#showScore").html(result.score);
+                            $("#showUsername").html(result.user.username);
+                            $("#showExamType").html(result.examType);
+                            $("#showResultLevel").html(result.resultLevel);
+                            $("#showSuggest").html("建议："+result.suggest);
+                            var content="测试结果描述："+result.description;
+                            $("#showDescription").html(content);
                         }else{
                             layer.alert(data.msg, {icon: 5, offset: '0px'});
                         }
 
                     }
                 });
-
-
-
-
             }
         });
     }
+
+
+    /**
+     * 获取所需要的员工信息
+     */
+    $(document).ready(function(){
+        $.ajax({
+            url:'/user/getTargetUsers',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+                if(data.code==0){
+                    var userList=data.userList;
+                    $.each(userList,function(i,item){
+                        <!-- 向商品详情表中进行数据注入 -->
+                        $("#selectUserId").append("<option value='"+item.userId+"'>"+item.username+"</option>");
+                        $("#selUserId1").append("<option value='"+item.userId+"'>"+item.username+"</option>");
+                        i++;
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 5, offset: '0px'});
+                }
+
+            }
+        });
+    });
 </script>
 
 <%--日期选择--%>

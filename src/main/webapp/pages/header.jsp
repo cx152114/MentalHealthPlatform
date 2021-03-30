@@ -12,7 +12,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
     </div>
     <!--logo start-->
-    <a href="/login/main"  class="logo"><b>手机<span>进销存管理系统</span></b></a>
+    <a href="/login/main"  class="logo"><b>大学生<span>心理健康管理平台</span></b></a>
     <!--logo end-->
 
     <div class="top-menu">
@@ -22,8 +22,8 @@
                 个人中心 <span class="caret"></span>
             </button>
             <ul class="nav pull-right dropdown-menu" role="menu">
-                <li><a href="#"><i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;个人中心</a></li>
-                <li><a href="#"><i class="fa fa-key"></i></i>&nbsp;&nbsp;&nbsp;&nbsp;修改密码</a></li>
+                <li><a href="/sys/userInfo"><i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;个人中心</a></li>
+                <li><a href="/sys/resetPassword"><i class="fa fa-key"></i></i>&nbsp;&nbsp;&nbsp;&nbsp;修改密码</a></li>
                 <li><a href="/sys/lockScreen"><i class="fa fa-unlock-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;锁屏</a></li>
                 <li class="divider"></li>
                 <li><a href="/user/logout"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;&nbsp;&nbsp;退出系统</a></li>

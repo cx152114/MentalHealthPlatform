@@ -37,7 +37,7 @@
     <!--内容区域-->
             <div class="row mt">
                 <div class="col-lg-12" style="height: 500px;">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <h4><a href="#" class="list-group-item active">
                             最新公告 <i class="fa fa-bolt"></i></a>
                         </h4>
@@ -102,7 +102,7 @@
 
         $.each(row, function (key, value) {
             if(key=="content"){
-                html.push('<p><b>公告内容：</b> ' + value + '</p>')
+                html.push("<div style='height:400px;overflow:auto'><b>公告内容：</b> " + value + "</div>")
             }
 
         })

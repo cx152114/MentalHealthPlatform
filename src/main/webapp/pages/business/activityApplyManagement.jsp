@@ -58,50 +58,13 @@
 </head>
 <body>
 <div class="row">
-    <div class="btn-group-sm" id="toolbar" role="group">
-        <shiro:hasPermission name="business:activityApply:add">
-            <a href="javascript:void(0)" class="btn btn-success"    onclick="addNotice()"><i class="fa fa-plus"></i> 新增</a>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="business:activityApply:batchRemove">
-            <a href="javascript:void(0)" class="btn btn-primary" onclick="editNotice()"><i class="fa fa-edit"></i> 修改</a>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="business:activity:remove">
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="removeSomeLogInfo()"><i class="fa fa-trash-o"></i> 批量删除</a>
-        </shiro:hasPermission>
-    </div>
     <!-- /col-md-12 -->
     <div class="col-md-12 mt">
-        <shiro:hasPermission name="business:activityApply:search">
-        <div class="col-sm-12 search-collapse">
-            <p class="select-title"></p>
-            <form id="time-form">
-                <div class="select-list">
-                    <ul>
-                        <li>
-                            公告标题：<input type="text" id="title1" name="title"/>
-                        </li>
-                        <li>
-                            发布人：<input type="text" id="opername1" name="opername"/>
-                        </li>
-                        <li class="select-time">
-                            <label>登录时间： </label>
-                            <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
-                            <span>-</span>
-                            <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
-                        </li>
-                        <li>
-                            <a class="btn btn-primary btn-rounded btn-sm" id="btn-search"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                            <a class="btn btn-warning btn-rounded btn-sm" onclick="resetForm('#time-form')"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                        </li>
-                    </ul>
-                </div>
-            </form>
-        </div>
-        </shiro:hasPermission>
         <div class="content-panel" style="height: 480px;overflow: auto;">
             <table class="table table-hover rowSameHeight"
                    data-toggle="table"
                    id="activityApplys"
+                   data-search="true"
                    data-toolbar="#toolbar"
                    data-show-refresh="true"
                    data-show-toggle="true"
@@ -118,93 +81,6 @@
     </div>
     <!-- /col-md-12 -->
 </div>
-
-<%--添加公告开始--%>
-<div style="display: none;padding: 5px" id="addOrUpdateDiv">
-    <div class="panel-body">
-            <form class="form-horizontal style-form" id="addNoticeForm" action="" method="post">
-                    <div class="col-sm-12" >
-                        <div>
-                            <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                            <input type="text" class="form-control" name="title" placeholder="公告标题" style="width: 60%">
-                        </div>
-                        <br>
-                        <div class="box float-e-margins">
-                            <div class="box-title">
-                                <h4>编辑/保存公告内容</h4>
-                            </div>
-                            <div class="box-body" id="eg">
-                                <textarea name="content" id="content" class="form-control summernote" style="display: none;"></textarea>
-                                <div id="test" class="note-editor note-frame panel panel-default"></div></div>
-                            </div>
-                        </div>
-                    <button type="button" id="doSubmit" class="btn btn-primary">提交</button>
-                    <button type="reset" class="btn btn-warning">重置</button>
-
-            </form>
-        </div>
-    </div>
-    <small class="font-bold"></small>
-</div>
-<%--添加公告结束--%>
-
-<%--修改公告开始--%>
-<div style="display: none;padding: 5px" id="editDiv">
-    <div class="panel-body">
-        <form class="form-horizontal style-form" id="editNoticeForm" action="" method="post">
-            <div class="col-sm-12" >
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告编号</label>
-                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%" >
-                </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布人</label>
-                    <input type="text" class="form-control" id="opername" name="opername" placeholder="发布人" style="width: 60%" >
-                </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">发布时间</label>
-                    <input type="text" class="form-control" id="createtime" name="createtime1" placeholder="发布时间" style="width: 60%" >
-                </div>
-                <div>
-                    <label class="control-label" style="font-size:19px;margin-left: 5px;">公告标题</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="公告标题" style="width: 60%">
-                </div>
-
-                <br>
-                <div class="box float-e-margins">
-                    <div class="box-title">
-                        <h4>编辑/保存公告内容</h4>
-                    </div>
-                    <div class="box-body" id="eg1">
-                        <textarea name="content" id="content1" class="form-control summernote" style="display: none;"></textarea>
-                        <div id="test1" class="note-editor note-frame panel panel-default"></div></div>
-                </div>
-            </div>
-            <button type="button" id="doSubmit1" class="btn btn-primary">提交</button>
-            <button type="reset" class="btn btn-warning">重置</button>
-
-        </form>
-    </div>
-</div>
-<small class="font-bold"></small>
-</div>
-<%--修改公告结束--%>
-
-
-
-<%--查看公告开始--%>
-<div style="display: none;padding: 5px" id="showNoticeDiv">
-    <h3 id="show_title" align="center"></h3>
-    <div style="text-align: right;">
-        发布人:<span id="show_opername"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-        发布时间:<span id="show_createtime"></span>
-    </div>
-    <hr>
-    <div id="show_content" ></div>
-
-</div>
-<%--查看公告结束--%>
-
 
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="${pageContext.request.contextPath}/lib/jquery/jquery.min.js"></script>
@@ -247,8 +123,8 @@
         queryParams: function (param) {
             return {
                 current: param.pageNumber, // 当前页 1
-                size: param.pageSize,      // 一页显示多少天 10
-                applyStatus:$("#applyStatus").val()
+                size: param.pageSize      // 一页显示多少天 10
+                //applyStatus:$("#applyStatus").val()
             }
         },
         columns: [
@@ -259,18 +135,49 @@
                 title: 'ID'
             }, {
                 field: 'uId',
-                title: '用户编号'
+                title: '用户编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.user.userId;
+                }
+            }, {
+                field: 'username',
+                title: '用户名',
+                formatter: function(value, item, index) {
+                    return item.user.username;
+                }
             }, {
                 field: 'activityId',
-                title: '活动编号'
+                title: '活动编号',
+                visible:false,
+                formatter: function(value, item, index) {
+                    return item.activity.activityId;
+                }
+            }, {
+                field: 'title',
+                title: '活动名称',
+                formatter: function(value, item, index) {
+                    return item.activity.title;
+                }
             }, {
                 field: 'applyStatus',
-                title: '申请状态'
+                title: '申请状态',
+                formatter: function(value, item, index) {
+                    if (value==0){
+                        return "<span class=\"label label-default\">待通过</span>";
+                    }
+                    if (value==1){
+                        return "<span class=\"label label-success\">通过</span>";
+                    }
+                    if (value==2){
+                        return "<span class=\"label label-warning\">驳回</span>";
+                    }
+                }
             },{
                 title:'操作',
                 field: 'active',
                 formatter: function(value, item, index) {
-                    return "<shiro:hasPermission name="business:activityApply:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:notice:search"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"showNotice(this)\">查看</button></shiro:hasPermission>";
+                    return "<shiro:hasPermission name="business:activityApply:remove"><button type=\"button\" class=\"btn btn-danger btn-rounded btn-xs\" onclick=\"remove(this)\">删除</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:activityApply:agreeApply"><button type=\"button\" class=\"btn btn-success btn-rounded btn-xs\" onclick=\"agreeApply(this)\">同意</button></shiro:hasPermission>"+"&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="business:activityApply:refuseApply"><button type=\"button\" class=\"btn btn-default btn-rounded btn-xs\" onclick=\"refuseApply(this)\">驳回</button></shiro:hasPermission>";
 
                 }
             }]
@@ -284,7 +191,7 @@
     // 刷新表格
     function refreshTable() {
         dataTable.bootstrapTable('refresh', {
-            url: "/business/activity/findAllActivity",
+            url: "/business/activityApply/findAllActivityApply",
             pageSize: 5,
             pageNumber: 1
         });
@@ -294,7 +201,7 @@
     var mainIndex;
 
     //iframe窗
-    function addNotice() {
+    /*function addNotice() {
         mainIndex=layer.open({
             type: 1,
             title: '新增公告',
@@ -305,8 +212,8 @@
             content: $("#addOrUpdateDiv")
         });
     }
-
-    function editNotice(data) {
+*/
+    /*function editNotice(data) {
         var $table = $('#notices');
         var notice = $table.bootstrapTable('getSelections');
         if (JSON.stringify(notice) == "[]") {
@@ -354,13 +261,13 @@
             });
         }
     }
-
+*/
 
 
     /**
      * 批量删除
      */
-    function removeSomeLogInfo() {
+    /*function removeSomeLogInfo() {
         var notices= $('#notices').bootstrapTable('getSelections');
         // alert(notices[0].id);
         var ids = new Array();
@@ -392,19 +299,19 @@
             }, function(){
             });
         }
-    }
+    }*/
 
     function remove(data){
-        layer.confirm('你是否确定要删除该条公告？', {
+        layer.confirm('你是否确定要删除该条申请？', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var value = $(data).parent().parent().find("td");
-            var noticeId=value.eq(1).text().toString().trim();
+            var applyId=value.eq(1).text().toString().trim();
             $.ajax({
-                url:'/sys/notice/deleteTargetNotice',
+                url:'/business/activityApply/deleteTargetActivityApply',
                 dataType:'json',
                 type:'post',
-                data:{noticeId:noticeId},
+                data:{applyId:applyId},
                 success:function(data){
                     if (data.code == 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
@@ -421,8 +328,7 @@
 
     }
 
-
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         $("#test").summernote({
             lang: 'zh-CN',
             minHeight : 150,
@@ -437,9 +343,9 @@
                 ['layout',['fullscreen','codeview']],
             ]
         });
-    });
+    });*/
 
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         $("#test1").summernote({
             lang: 'zh-CN',
             minHeight : 150,
@@ -455,8 +361,9 @@
             ]
         });
     });
+*/
 
-    $("#doSubmit").click(function(){
+    /*$("#doSubmit").click(function(){
         //同步富文本和textarea里面的内容
         var text = $($("#test").summernote("code")).text();
         //var text = $($("#test").summernote("code"));
@@ -472,8 +379,9 @@
             }
         });
     });
+*/
 
-    $("#doSubmit1").click(function(){
+    /*$("#doSubmit1").click(function(){
         //同步富文本和textarea里面的内容
         var text01 = $($("#test1").summernote("code")).text();
         //var text = $($("#test").summernote("code"));
@@ -487,42 +395,50 @@
             }
         });
     });
+*/
+
+    //通过申请
+    function agreeApply(data){
+        var value = $(data).parent().parent().find("td");
+        var applyId=value.eq(1).text().toString().trim();
+        $.ajax({
+            url:'/business/activityApply/agreeTargetApply',
+            dataType:'json',
+            type:'post',
+            data:{applyId:applyId},
+            success:function(res){
+                if(res.code==0){
+                    layer.msg(res.msg);
+                    refreshTable();
+                    layer.close(mainIndex);
+                }else{
+                    layer.alert(data.msg, {icon: 5, offset: '0px'});
+                }
+            }
+        });
+    }
 
 
-    //弹出查看层
-    function showNotice(data){
-        mainIndex=layer.open({
-            type:1,
-            content:$("#showNoticeDiv"),
-            area:['800px','300px'],
-            title:'查看公告',
-            success:function(){
-                var value = $(data).parent().parent().find("td");
-                var noticeId=value.eq(1).text().toString().trim();
-                $.ajax({
-                    url:'/sys/notice/findTargetNotice',
-                    dataType:'json',
-                    type:'post',
-                    data:{noticeId:noticeId},
-                    success:function(data){
-                        if(data.code==0){
-                            var notice=data.notice;
-                            $("#show_title").html(notice.title);
-                            $("#show_opername").html(notice.opername);
-                            $("#show_createtime").html(notice.createtime);
-
-                            var content="<lable style='font-size: 16px;'>"+notice.content+"</lable>";
-                            $("#show_content").html(content);
-                        }else{
-                            layer.alert(data.msg, {icon: 5, offset: '0px'});
-                        }
-
-                    }
-                });
-
-
-
-
+    /**
+     * 拒绝申请
+     * @param data
+     */
+    function refuseApply(data){
+        var value = $(data).parent().parent().find("td");
+        var applyId=value.eq(1).text().toString().trim();
+        $.ajax({
+            url:'/business/activityApply/refuseTargetApply',
+            dataType:'json',
+            type:'post',
+            data:{applyId:applyId},
+            success:function(res){
+                if(res.code==0){
+                    layer.msg(res.msg);
+                    refreshTable();
+                    layer.close(mainIndex);
+                }else{
+                    layer.alert(data.msg, {icon: 5, offset: '0px'});
+                }
             }
         });
     }

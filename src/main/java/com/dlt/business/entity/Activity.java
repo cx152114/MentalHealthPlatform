@@ -35,6 +35,8 @@ public class Activity implements Serializable {
 
     private Integer maxCount;
 
+    private Integer remainingCount;
+
     private String address;
 
     private String sendName;

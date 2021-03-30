@@ -1,6 +1,7 @@
 package com.dlt.business.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dlt.business.entity.Activity;
 import com.dlt.business.entity.Article;
 import com.dlt.business.service.IArticleService;
@@ -8,12 +9,9 @@ import com.dlt.common.model.R;
 import net.sf.json.JSONArray;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,5 +104,22 @@ public class ArticleController {
         return R.ok().put("article",article);
     }
 
+    @GetMapping(value = "/studentArticle")
+    @RequiresPermissions("business:article:search")
+    public String studentArticle() {
+        return "/business/student-article";
+    }
+
+    @RequestMapping(value = "/findTargetStudentArticle/{typeId}")
+    @RequiresPermissions("business:article:search")
+    @ResponseBody
+    public R findTargetStudentArticle(@PathVariable Integer typeId){
+        QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
+        if (typeId != null){
+            queryWrapper.eq("type_id",typeId);
+        }
+        List<Article> articleList=articleService.list(queryWrapper);
+        return R.ok().put("rows",articleList);
+    }
 
 }

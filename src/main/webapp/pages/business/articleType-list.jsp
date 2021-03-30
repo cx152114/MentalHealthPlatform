@@ -60,15 +60,15 @@
 
     <div class="row">
         <div class="btn-group-sm" id="toolbar" role="group">
-            <shiro:hasPermission name="sys:articleType:add">
+            <shiro:hasPermission name="business:articleType:add">
                 <a class="btn btn-success" data-toggle="modal" data-backdrop="false" data-target="#addArticleTypeModal" ><i class="fa fa-plus"></i> 新增</a>
             </shiro:hasPermission>
 
-            <shiro:hasPermission name="sys:articleType:update">
+            <shiro:hasPermission name="business:articleType:update">
                 <a href="javascript:void(0)" class="btn btn-primary" onclick="alterArticleType()"><i class="fa fa-edit"></i> 修改</a>
             </shiro:hasPermission>
 
-            <shiro:hasPermission name="sys:articleType:delete">
+            <shiro:hasPermission name="business:articleType:delete">
                 <a href="javascript:void(0)" class="btn btn-danger" onclick="removeArticleType()"><i class="fa fa-remove"></i> 删除</a>
             </shiro:hasPermission>
         </div>
@@ -77,7 +77,7 @@
         <div class="col-md-12 mt">
 
 
-            <shiro:hasPermission name="sys:articleType:search">
+            <shiro:hasPermission name="business:articleType:search">
                 <div class="col-sm-12 search-collapse">
                 <p class="select-title"></p>
                 <form id="time-form">
@@ -111,7 +111,7 @@
                        data-show-columns-toggle-all="true"
                        data-click-to-select="true"
                        data-single-select="true"
-                        <shiro:hasPermission name="sys:articleType:export">
+                        <shiro:hasPermission name="business:articleType:export">
                                data-show-export="true"
                                data-exportDataType ="basic"
                         </shiro:hasPermission>

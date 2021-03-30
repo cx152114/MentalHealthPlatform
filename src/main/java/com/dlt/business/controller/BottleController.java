@@ -4,12 +4,14 @@ package com.dlt.business.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dlt.business.entity.Bottle;
-import com.dlt.business.entity.Joy;
+import com.dlt.business.entity.Message;
 import com.dlt.business.service.IBottleService;
-import com.dlt.business.service.IJoyService;
 import com.dlt.common.model.R;
+import com.dlt.sys.entity.User;
+import com.dlt.sys.service.IUserService;
 import net.sf.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,9 @@ public class BottleController {
     @Autowired
     private IBottleService bottleService;
 
+    @Autowired
+    private IUserService userService;
+
     @GetMapping
     @RequiresPermissions("business:bottle:search")
     public String bottleManagement(){
@@ -47,20 +52,23 @@ public class BottleController {
     @RequestMapping(value = "/findAllBottle")
     @RequiresPermissions("business:bottle:search")
     @ResponseBody
-    public R findAllBottle(Page<Bottle> page, Bottle bottle, String startTime, String endTime){
+    public R findAllBottle(Bottle bottle, String startTime, String endTime){
         QueryWrapper<Bottle> queryWrapper=new QueryWrapper<Bottle>();
         if (null != bottle.getUId()){
             queryWrapper.like("u_id", bottle.getUId());
+        }
+        if (!StringUtils.isEmpty(bottle.getBottlecontent())){
+            queryWrapper.like("bottlecontent",bottle.getBottlecontent());
         }
         if (!StringUtils.isEmpty(startTime)){
             queryWrapper.ge("create_date",startTime);
         }
         if (!StringUtils.isEmpty(endTime)){
-            queryWrapper.le("create_date",startTime);
+            queryWrapper.le("create_date",endTime);
         }
         queryWrapper.orderByDesc("create_date");
-        bottleService.page(page, queryWrapper);
-        return R.ok(page);
+        List<Bottle> bottleList = bottleService.list(queryWrapper);
+        return R.ok().put("rows",bottleList);
     }
 
 
@@ -69,6 +77,8 @@ public class BottleController {
     @ResponseBody
     public R addBottle(Bottle bottle){
         bottle.setCreateDate(new Date());
+        User user=(User) SecurityUtils.getSubject().getPrincipal();
+        bottle.setUId(user.getUserId());
         bottleService.save(bottle);
         return R.ok();
     }
@@ -84,7 +94,7 @@ public class BottleController {
         return R.ok();
     }
 
-    @RequestMapping(value = "deleteTargetBottle")
+    @RequestMapping(value = "/deleteTargetBottle")
     @RequiresPermissions("business:bottle:remove")
     @ResponseBody
     public R deleteTargetBottle(Integer bottleId){
@@ -93,7 +103,7 @@ public class BottleController {
     }
 
 
-    @RequestMapping(value = "batchDeleteBottle")
+    @RequestMapping(value = "/batchDeleteBottle")
     @RequiresPermissions("business:bottle:batchRemove")
     @ResponseBody
     public R batchDeleteBottle(String ids){
@@ -105,6 +115,15 @@ public class BottleController {
         }
         bottleService.removeByIds(list);
         return R.ok("删除成功");
+    }
+
+    @RequestMapping(value = "/findTargetBottle",method = RequestMethod.POST)
+    @ResponseBody
+    public R findTargetBottle(Integer bottleId){
+        Bottle bottle=bottleService.getById(bottleId);
+        User user = userService.getById(bottle.getUId());
+        bottle.setUser(user);
+        return R.ok().put("bottle",bottle);
     }
 
 
