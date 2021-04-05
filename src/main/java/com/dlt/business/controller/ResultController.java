@@ -164,7 +164,7 @@ public class ResultController {
         String resultLevel = "";
         String description ="";
         String suggest = "";
-        if(!StringUtils.isEmpty(result.getResultLevel())){
+        if(result.getScore() !=null){
             if (result.getScore() > 90 && result.getScore() <= 100){
                 resultLevel = "优秀";
                 if (result.getExamType().equals("综合测试")) {

@@ -118,7 +118,7 @@
                    data-search="true"
                    data-toolbar="#toolbar"
                    data-show-refresh="true"
-                   data-show-toggle="true"
+                   <%-- data-show-toggle="true" --%>
                    data-show-fullscreen="true"
                    data-show-columns="true"
                    data-show-columns-toggle-all="true"
@@ -147,12 +147,12 @@
                         </div>
                         <div>
                             <label class="control-label" style="font-size:19px;margin-left: 5px;">分数</label>
-                            <input type="number" class="form-control" name="score" placeholder="分数" style="width: 60%">
+                            <input type="number" class="form-control" id="t1" name="score" placeholder="分数" style="width: 60%">
                         </div>
                         <div>
                             <!--测试试题类型的选择-->
                             <label for="selectExamType" class="control-label">题目类别：</label>
-                            <select class="form-control"  style="width: 120px;"  name="examType">
+                            <select class="form-control"  style="width: 120px;" id="t2"  name="examType">
                                 <option style='display: none'></option>
                                 <option value="综合测试">综合测试</option>
                                 <option value="日常交往">日常交往</option>
@@ -378,11 +378,13 @@
                         data: {resultId: resultId},
                         success: function (data) {
                             if (data.code == 0) {
+                                console.log(data.result)
                                 //layer.msg(data.msg, {icon: 1, time: 1000, offset: '0px'});
                                 $("#resultId").val(data.result.resultId);
                                 $("#examType").val(data.result.examType);
                                 $("#score").val(data.result.score);
-                                $("#selUserId1").val(data.result.uId);
+
+                                $("#selUserId1").val(data.result.user.userId);
                             } else {
                                 layer.alert(data.msg, {icon: 5, offset: '0px'});
                             }
@@ -496,6 +498,21 @@
     });
 
     $("#doSubmit").click(function(){
+        var t1 = $("#t1").val();
+        var t2 = $("#t2").val();
+        var selectUserId = $("#selectUserId").val();
+        if(t1 == '' || t1 == 'undefined'){
+            layer.alert("请将测评结果信息填写完整！", {icon: 5});
+            return;
+        }
+        if(t2 == '' || t2 == 'undefined'){
+            layer.alert("请将测评结果信息填写完整！", {icon: 5});
+            return;
+        }
+        if(selectUserId == '' || selectUserId == 'undefined'){
+            layer.alert("请将测评结果信息填写完整！", {icon: 5});
+            return;
+        }
         //同步富文本和textarea里面的内容
         var data=$("#addResultForm").serialize();
         $.post("/business/result/addResult",data,function(res){
@@ -508,6 +525,26 @@
     });
 
     $("#doSubmit1").click(function(){
+        var resultId = $("#resultId").val();
+        var examType = $("#examType").val();
+        var score = $("#score").val();
+        var selUserId1 = $("#selUserId1").val();
+        if(resultId == '' || resultId == 'undefined'){
+            layer.alert("请将测评成绩信息填写完整！", {icon: 5});
+            return;
+        }
+        if(examType == '' || examType == 'undefined'){
+            layer.alert("请将测评成绩信息填写完整！", {icon: 5});
+            return;
+        }
+        if(score == '' || score == 'undefined'){
+            layer.alert("请将测评成绩信息填写完整！", {icon: 5});
+            return;
+        }
+        if(selUserId1 == '' || selUserId1 == 'undefined'){
+            layer.alert("请将测评成绩信息填写完整！", {icon: 5});
+            return;
+        }
         var data=$("#editResultForm").serialize();
         $.post("/business/result/editResult",data,function(res){
             if(res.code==0){
@@ -567,7 +604,6 @@
                 if(data.code==0){
                     var userList=data.userList;
                     $.each(userList,function(i,item){
-                        <!-- 向商品详情表中进行数据注入 -->
                         $("#selectUserId").append("<option value='"+item.userId+"'>"+item.username+"</option>");
                         $("#selUserId1").append("<option value='"+item.userId+"'>"+item.username+"</option>");
                         i++;

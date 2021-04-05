@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dlt.sys.mapper.VerbalTrickMapper">
+    <select id="queryTargetVerbalTrick" resultMap="resultMap2">
+         select * from test.student_info where classes ='1班' and name ='张三'
+    </select>
+
+    <resultMap id="VerbalTrickMap" type="com.dlt.sys.entity.VerbalTrick" autoMapping="true">
+        <id column="verbal_id" property="classes"></id>
+        <association property="student" javaType="com.anjiplus.mybatistest.bean.Student" autoMapping="true" >
+            <id column="name" property="name"></id>
+            <id column="student_numer" property="studentNumber"></id>
+            <collection property="subjectAndScore" javaType="java.util.ArrayList" ofType="com.anjiplus.mybatistest.bean.SubjectAndScore">
+                <id column="subject" property="subject"></id>
+                <result column="score" property="score"></result>
+            </collection>
+        </association>
+    </resultMap>
+
+    <select id="queryTargetVerbalTrick" resultMap="com.dlt.sys.entity.VerbalTrick">
+        select * from
+    </select>
 
 </mapper>

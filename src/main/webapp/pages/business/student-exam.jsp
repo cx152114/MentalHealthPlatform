@@ -121,7 +121,7 @@
             <hr color="orange" width="700px" />
             <form method="post" action="/business/exam/generateExamResult">
                 <div style="display: none">
-                    <input type="text" name="examType" id="examType" value="">
+                    <input type="text" name="examType" id="examType" value="" required>
                 </div>
                 <ol id="ol1">
 
@@ -248,7 +248,12 @@
             data: {type: date},
             success: function (data) {
                 if (data.code == 0) {
-                    generateExam(data)
+                    if (data.exams.length < 10){
+                        layer.alert("未找到足够的测评试题，请联系管理员添加", {icon: 5, offset: '0px'});
+                    }else{
+                        generateExam(data)
+                    }
+
                 } else {
                     layer.alert(data.msg, {icon: 5, offset: '0px'});
                 }
@@ -270,6 +275,7 @@
                 var input = document.createElement("input");
                 input.setAttribute("type","radio");
                 input.setAttribute("name","question"+i);
+                input.setAttribute("required","true");
                 //input.setAttribute("id","item"+j);
                 var node = ""
                 if (j + 1 === 1){

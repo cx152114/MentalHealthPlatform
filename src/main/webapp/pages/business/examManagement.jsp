@@ -30,6 +30,10 @@
 
     <link  href="${pageContext.request.contextPath}/lib/summernote/summernote.css" rel="stylesheet" />
 
+    <%--引入bootstrap用于表单验证的插件--%>
+    <link href="${pageContext.request.contextPath}/lib/bootstrapValidator/css/bootstrapValidator.css" rel="stylesheet">
+
+
     <style type="text/css">
         th{
             text-align: center;
@@ -106,7 +110,7 @@
                    id="exams"
                    data-toolbar="#toolbar"
                    data-show-refresh="true"
-                   data-show-toggle="true"
+                   <%-- data-show-toggle="true" --%>
                    data-show-fullscreen="true"
                    data-show-columns="true"
                    data-show-columns-toggle-all="true"
@@ -124,16 +128,16 @@
 <%--添加试题开始--%>
 <div style="display: none;padding: 5px" id="addOrUpdateDiv">
     <div class="panel-body">
-            <form class="form-horizontal style-form" id="addExamForm" action="" method="post">
+            <form class="form-horizontal style-form" id="addExamForm">
                     <div class="col-sm-12" >
                         <div>
                             <label class="control-label" style="font-size:19px;margin-left: 5px;">标题</label>
-                            <input type="text" class="form-control" name="title" placeholder="标题" style="width: 60%">
+                            <input type="text" class="form-control" id="t1" name="title" placeholder="标题" style="width: 60%" required="true">
                         </div>
                         <div>
                             <!--测试试题类型的选择-->
                             <label for="selectExamType" class="control-label">试题类别：</label>
-                            <select class="form-control"  style="width: 120px;" id="selectExamType"  name="type">
+                            <select class="form-control"  style="width: 120px;" id="selectExamType"  name="type" required="true">
                                 <option style='display: none'></option>
                                 <option value="综合测试">综合测试</option>
                                 <option value="日常交往">日常交往</option>
@@ -145,33 +149,33 @@
                         <div>
                             <div>
                                 <label class="control-label" style="font-size:19px;margin-left: 5px;">选项一(4分)：</label>
-                                <input type="text" class="form-control" name="section1" placeholder="选项一(4分)：" style="width: 60%">
+                                <input type="text" class="form-control" id="t2" name="section1" placeholder="选项一(4分)：" style="width: 60%" required="true">
                             </div>
                         </div>
                         <div>
 
                             <div>
                                 <label class="control-label" style="font-size:19px;margin-left: 5px;">选项二(3分)：</label>
-                                <input type="text" class="form-control" name="section2" placeholder="选项二(3分)：" style="width: 60%">
+                                <input type="text" class="form-control" id="t3" name="section2" placeholder="选项二(3分)：" style="width: 60%" required="true">
                             </div>
                         </div>
                         <div>
 
                             <div>
                                 <label class="control-label" style="font-size:19px;margin-left: 5px;">选项三(2分)：</label>
-                                <input type="text" class="form-control" name="section3" placeholder="选项三(2分)：" style="width: 60%">
+                                <input type="text" class="form-control" id="t4" name="section3" placeholder="选项三(2分)：" style="width: 60%" required="true">
                             </div>
                         </div>
                         <div>
 
                             <div>
                                 <label class="control-label" style="font-size:19px;margin-left: 5px;">选项四(1分)：</label>
-                                <input type="text" class="form-control" name="section4" placeholder="选项四(1分)：" style="width: 60%">
+                                <input type="text" class="form-control" id="t5" name="section4" placeholder="选项四(1分)：" style="width: 60%" required="true">
                             </div>
                         </div>
                     <button type="button" id="doSubmit" class="btn btn-primary">提交</button>
-                    <button type="reset" class="btn btn-warning">重置</button>
-
+                    <button type="reset" id="resetBtn" class="btn btn-warning">重置</button>
+                    </div>
             </form>
         </div>
     </div>
@@ -186,16 +190,16 @@
             <div class="col-sm-12" >
                 <div style="display: none">
                     <label class="control-label" style="font-size:19px;margin-left: 5px;">测验试题编号</label>
-                    <input type="text" class="form-control" id="businessId" name="businessId" placeholder="测验试题标题" style="width: 60%" >
+                    <input type="text" class="form-control" id="businessId" name="businessId" placeholder="测验试题编号" style="width: 60%" >
                 </div>
                 <div>
                     <label class="control-label" style="font-size:19px;margin-left: 5px;">标题</label>
-                    <input type="text" class="form-control" id="title1" name="title" placeholder="标题" style="width: 60%">
+                    <input type="text" class="form-control" id="title1" name="title" placeholder="标题" style="width: 60%" required="true">
                 </div>
                 <div>
                     <!--测试试题类型的选择-->
                     <label for="selectExamType" class="control-label">试题类别：</label>
-                    <select class="form-control"  style="width: 120px;" id="selectExamType1"  name="type">
+                    <select class="form-control"  style="width: 120px;" id="selectExamType1"  name="type" required="true">
                         <option style='display: none'></option>
                         <option value="综合测试">综合测试</option>
                         <option value="日常交往">日常交往</option>
@@ -207,28 +211,28 @@
                 <div>
                     <div>
                         <label class="control-label" style="font-size:19px;margin-left: 5px;">选项一(4分)：</label>
-                        <input type="text" class="form-control" id="section1" name="section1" placeholder="选项一(4分)：" style="width: 60%">
+                        <input type="text" class="form-control" id="section1" name="section1" placeholder="选项一(4分)：" style="width: 60%" required="true">
                     </div>
                 </div>
                 <div>
 
                     <div>
                         <label class="control-label" style="font-size:19px;margin-left: 5px;">选项二(3分)：</label>
-                        <input type="text" class="form-control" id="section2" name="section2" placeholder="选项二(3分)：" style="width: 60%">
+                        <input type="text" class="form-control" id="section2" name="section2" placeholder="选项二(3分)：" style="width: 60%" required="true">
                     </div>
                 </div>
                 <div>
 
                     <div>
                         <label class="control-label" style="font-size:19px;margin-left: 5px;">选项三(2分)：</label>
-                        <input type="text" class="form-control" id="section3" name="section3" placeholder="选项三(2分)：" style="width: 60%">
+                        <input type="text" class="form-control" id="section3" name="section3" placeholder="选项三(2分)：" style="width: 60%" required="true">
                     </div>
                 </div>
                 <div>
 
                     <div>
                         <label class="control-label" style="font-size:19px;margin-left: 5px;">选项四(1分)：</label>
-                        <input type="text" class="form-control" id="section4" name="section4" placeholder="选项四(1分)：" style="width: 60%">
+                        <input type="text" class="form-control" id="section4" name="section4" placeholder="选项四(1分)：" style="width: 60%" required="true">
                     </div>
                 </div>
             </div>
@@ -516,7 +520,39 @@
     });
 
     $("#doSubmit").click(function(){
+        var t1 = $("#t1").val();
+        var t2 = $("#t2").val();
+        var t3 = $("#t3").val();
+        var t4 = $("#t4").val();
+        var t5 = $("#t5").val();
+        var selectExamType = $("#selectExamType").val();
+        if(t1 == '' || t1 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(t2 == '' || t2 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(t3 == '' || t3 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(t4 == '' || t4 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(t5 == '' || t5 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(selectExamType == '' || selectExamType == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
         var data=$("#addExamForm").serialize();
+        console.log(data)
+
         $.post("/business/exam/addExam",data,function(res){
             if(res.code==0){
                 layer.msg(res.msg);
@@ -527,6 +563,41 @@
     });
 
     $("#doSubmit1").click(function(){
+        var businessId = $("#businessId").val();
+        var selectExamType1 = $("#selectExamType1").val();
+        var title1 = $("#title1").val();
+        var section1 = $("#section1").val();
+        var section2 = $("#section2").val();
+        var section3 = $("#section3").val();
+        var section4 = $("#section4").val();
+        if(businessId == '' || businessId == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(selectExamType1 == '' || selectExamType1 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(title1 == '' || title1 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(section1 == '' || section1 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(section2 == '' || section2 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(section3 == '' || section3 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
+        if(section4 == '' || section4 == 'undefined'){
+            layer.alert("请将测评试题信息填写完整！", {icon: 5});
+            return;
+        }
         var data=$("#editExamForm").serialize();
         $.post("/business/exam/editExam",data,function(res){
             if(res.code==0){

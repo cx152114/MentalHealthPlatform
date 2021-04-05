@@ -94,8 +94,7 @@
                    id="activities"
                    data-toolbar="#toolbar"
                    data-show-refresh="true"
-                   data-show-toggle="true"
-                   data-show-fullscreen="true"
+                   <%-- data-show-toggle="true" --%>
                    data-show-columns="true"
                    data-show-columns-toggle-all="true"
                    data-click-to-select="true"
@@ -123,7 +122,7 @@
            id="activityApplyDetails"
            data-toolbar="#toolbar1"
            data-show-refresh="true"
-           data-show-toggle="true"
+           <%-- data-show-toggle="true" --%>
            data-show-fullscreen="true"
            data-show-columns="true"
            data-show-columns-toggle-all="true"

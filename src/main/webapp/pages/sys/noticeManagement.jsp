@@ -104,7 +104,7 @@
                    id="notices"
                    data-toolbar="#toolbar"
                    data-show-refresh="true"
-                   data-show-toggle="true"
+                   <%-- data-show-toggle="true" --%>
                    data-show-fullscreen="true"
                    data-show-columns="true"
                    data-show-columns-toggle-all="true"
@@ -160,7 +160,7 @@
             <div class="col-sm-12" >
                 <div>
                     <label class="control-label" style="font-size:19px;margin-left: 5px;">公告编号</label>
-                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%" >
+                    <input type="text" class="form-control" id="noticeId" name="noticeId" placeholder="公告标题" style="width: 60%;display: none"  >
                 </div>
                 <div>
                     <label class="control-label" style="font-size:19px;margin-left: 5px;">发布人</label>

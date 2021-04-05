@@ -149,10 +149,9 @@ public class ExamController {
 
         System.out.println(sum);
         Result result = new Result();
-
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         result.setUId(user.getUserId());
-        result.setScore((sum/40)*100);
+        result.setScore((sum*100)/40);
         result.setExamType(examType);
         String resultLevel = "";
         String description ="";
